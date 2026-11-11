@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAK PANCA MOTION GAME</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--night:#17104f;--night2:#2a1a86;--pink:#ff3d8b;--sun:#ffd23f;--mint:#2ee6a6;--sky:#38bdf8;--ink:#fff;--red:#ff4d4d;
+--f:"Baloo 2","Trebuchet MS",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:var(--f);color:var(--ink);background:radial-gradient(ellipse at 50% 0,var(--night2),var(--night) 70%);overflow:hidden;font-size:clamp(18px,2.2vw,30px)}
+.beams{position:fixed;inset:0;pointer-events:none;background:conic-gradient(from 200deg at 15% -5%,transparent 0 8%,#ffd23f26 10%,transparent 14%),conic-gradient(from 160deg at 85% -5%,transparent 0 8%,#38bdf826 10%,transparent 14%)}
+.view{display:none;position:absolute;inset:0;padding:3vh 4vw;flex-direction:column;overflow:auto}
+.view.on{display:flex}
+h1,h2{font-weight:800;line-height:1}
+.logo{font-size:clamp(48px,10vw,150px);text-transform:uppercase;letter-spacing:.02em;text-shadow:0 .06em 0 var(--pink),0 .12em 0 #0004}
+.logo small{display:block;font-size:.42em;color:var(--sun);letter-spacing:.3em}
+.btn{font:inherit;font-weight:800;border:0;border-radius:999px;padding:.5em 1.4em;cursor:pointer;color:var(--night);background:var(--sun);box-shadow:0 .2em 0 #b8921a;transition:transform .12s}
+.btn:active{transform:translateY(.15em);box-shadow:0 .05em 0 #b8921a}
+.btn.pink{background:var(--pink);color:#fff;box-shadow:0 .2em 0 #a01a52}
+.btn.ghost{background:#ffffff1f;color:#fff;box-shadow:none}
+.btn.big{font-size:1.6em}
+:focus-visible{outline:4px solid var(--mint);outline-offset:3px}
+#splash{align-items:center;justify-content:center;text-align:center;gap:4vh}
+#splash p{max-width:30em;opacity:.9}
+.top{display:flex;align-items:center;justify-content:space-between;gap:2vw;margin-bottom:2vh}
+.top h2{font-size:1.8em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:2vw}
+.card{font:inherit;color:inherit;text-align:left;border:0;border-radius:1.2em;padding:1em;cursor:pointer;display:flex;flex-direction:column;gap:.4em;background:linear-gradient(160deg,var(--c),#0006);box-shadow:inset 0 0 0 3px #fff3,0 .3em 0 #0005;transition:transform .15s}
+.card:hover{transform:translateY(-.2em) rotate(-.6deg)}
+.card .ic{font-size:2.4em}
+.card b{font-size:1.15em}
+.card span{font-size:.72em;opacity:.95}
+.tags{display:flex;gap:.4em;flex-wrap:wrap;margin-top:auto}
+.tag{font-size:.6em;background:#0005;border-radius:99px;padding:.1em .7em}
+.tag.soon{background:var(--sun);color:var(--night)}
+.panel{background:#ffffff14;border:3px solid #ffffff30;border-radius:1.2em;padding:1em 1.2em;display:flex;flex-direction:column;gap:.6em}
+.row{display:flex;gap:2vw;flex-wrap:wrap}
+.row>*{flex:1 1 280px}
+label{font-weight:700}
+textarea,select,input[type=range]{font:inherit;width:100%;border-radius:.6em;border:0;padding:.4em .6em;background:#fff;color:var(--night)}
+textarea{height:8em;resize:vertical}
+.seg{display:flex;gap:.4em}.seg .btn{flex:1;font-size:.8em}.seg .btn.sel{background:var(--mint)}
+.cam{aspect-ratio:16/9;max-height:52vh;width:100%;border-radius:1em;border:4px dashed #fff6;position:relative;display:grid;place-items:center;background:#0003;text-align:center}
+.cam::after{content:"";position:absolute;top:0;bottom:0;left:50%;border-left:4px dashed var(--sun)}
+.cam i{position:absolute;top:.4em;font-style:normal;font-size:.7em;background:#0006;border-radius:99px;padding:0 .8em}
+.stat{display:inline-flex;align-items:center;gap:.4em;font-size:.8em}
+.dot{width:.7em;height:.7em;border-radius:50%;background:var(--red)}
+#play{padding:0}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:1em;padding:1.5vh 3vw;background:#0004}
+.bar{flex:1;height:1em;border-radius:99px;background:#fff3;overflow:hidden}
+.bar div{height:100%;width:100%;background:var(--mint);transform-origin:left}
+.q{text-align:center;padding:2vh 4vw;font-size:2.2em;font-weight:800;min-height:3.3em;display:grid;place-items:center}
+.arena{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:240px;perspective:900px}
+.zone{font:inherit;color:#fff;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3em;font-size:2.4em;font-weight:800;transition:background .2s,filter .2s;transform:rotateX(14deg);transform-origin:50% 100%}
+.zone small{font-size:.4em;letter-spacing:.3em;opacity:.8}
+#zL{background:linear-gradient(#1f6fe0,#123a8a)}#zR{background:linear-gradient(#e0701f,#8a3d12)}
+.zone.ok{background:var(--mint);color:var(--night);animation:pop .5s}.zone.no{background:var(--red);animation:shake .4s}
+@keyframes pop{50%{transform:rotateX(14deg) scale(1.05)}}
+@keyframes shake{25%{translate:-14px}75%{translate:14px}}
+.over{position:fixed;inset:0;display:none;place-items:center;background:#000b;z-index:9;text-align:center}
+.over.on{display:grid}
+.count{font-size:min(40vw,360px);font-weight:800;color:var(--sun);text-shadow:0 .05em 0 var(--pink)}
+.table{width:100%;border-collapse:collapse}
+.table td,.table th{padding:.3em .6em;border-bottom:2px solid #fff3;text-align:left}
+.score{font-size:min(30vw,220px);font-weight:800;color:var(--sun);text-shadow:0 .05em 0 var(--pink);line-height:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="beams" aria-hidden="true"></div>
+
+<section class="view on" id="splash">
+  <h1 class="logo"><small>Game gerak seru</small>Pak Panca<br>Motion Game</h1>
+  <p>Berdiri di depan kamera, bergeraklah, dan jawab dengan tubuhmu!</p>
+  <button class="btn pink big" data-go="menu">MULAI</button>
+</section>
+
+<section class="view" id="menu">
+  <div class="top"><h2>Pilih Game</h2><button class="btn ghost" data-go="splash">Beranda</button></div>
+  <div class="grid" id="cards"></div>
+</section>
+
+<section class="view" id="setup">
+  <div class="top"><h2 id="setupTitle">Persiapan</h2><button class="btn ghost" data-go="menu">Kembali</button></div>
+  <div class="row">
+    <div class="panel">
+      <label>Mode</label>
+      <div class="seg" id="modeSeg"><button class="btn sel" data-mode="serentak">Serentak</button><button class="btn" data-mode="giliran">Bergiliran</button></div>
+      <label for="names">Nama pemain atau tim (satu per baris)</label>
+      <textarea id="names" placeholder="Contoh:&#10;Ayu&#10;Budi&#10;Citra"></textarea>
+    </div>
+    <div class="panel">
+      <label for="sub">Mata pelajaran</label>
+      <select id="sub"><option>Matematika dasar</option><option>Bahasa Indonesia</option><option>IPAS</option></select>
+      <label for="lvl">Kelas</label>
+      <select id="lvl"><option>Kelas 1-2</option><option>Kelas 3-4</option><option>Kelas 5-6</option></select>
+      <p style="font-size:.7em">Area bermain harus bebas dari meja, kursi, dan kabel. Cukup geser badan atau melangkah ke samping, tidak perlu melompat tinggi.</p>
+      <button class="btn pink" data-go="calib">Cek kamera</button>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="calib">
+  <div class="top"><h2>Kalibrasi</h2><button class="btn ghost" data-go="setup">Kembali</button></div>
+  <div class="cam"><i>KIRI</i><div><b>Pratinjau kamera muncul di sini</b><br><small>Kamera aktif mulai Tahap 2</small></div></div>
+  <div class="row" style="margin-top:2vh;align-items:center">
+    <div><span class="stat"><span class="dot"></span>Kamera belum aktif</span><br><span class="stat">Pose terdeteksi: 0</span></div>
+    <div><label for="sens">Sensitivitas gerakan</label><input id="sens" type="range" min="1" max="10" value="5"></div>
+    <button class="btn pink" id="startPlay">Mulai main</button>
+  </div>
+</section>
+
+<section class="view" id="play">
+  <div class="hud">
+    <span>Soal <b id="qn">1</b>/5</span>
+    <div class="bar"><div id="tbar"></div></div>
+    <span>Skor <b id="sc">0</b></span>
+    <button class="btn ghost" id="pause">Jeda</button>
+    <button class="btn pink" id="stop">Berhenti</button>
+  </div>
+  <div class="q" id="qtext"></div>
+  <div class="arena">
+    <button class="zone" id="zL"><small>KIRI</small><span id="aL"></span></button>
+    <button class="zone" id="zR"><small>KANAN</small><span id="aR"></span></button>
+  </div>
+</section>
+
+<section class="view" id="result" style="align-items:center;text-align:center;gap:2vh">
+  <h2>Hasil Akhir</h2>
+  <div class="score" id="final">0</div>
+  <p id="detail"></p>
+  <div class="panel" style="width:min(100%,760px)"><b>Riwayat di perangkat ini</b><table class="table" id="hist"></table></div>
+  <div class="row" style="justify-content:center;flex:none"><button class="btn" id="again">Main lagi</button><button class="btn ghost" data-go="menu">Menu utama</button><button class="btn ghost" id="clr">Hapus riwayat</button></div>
+</section>
+
+<div class="over" id="over"><div><div class="count" id="cnt">3</div><p id="ovmsg">Bersiap!</p><button class="btn pink" id="resume" hidden>Lanjut</button></div></div>
+
+<script>
+const GAMES=[
+ {id:"jump",ic:"🏃",n:"Jump to Answer",d:"Pilih jawaban dengan bergeser ke kiri atau kanan.",c:"#1f6fe0",m:"Serentak",lv:"Mudah",ready:1},
+ {id:"shape",ic:"🧱",n:"Human Shape Challenge",d:"Tirukan siluet dinding dalam 5 detik.",c:"#d1297a",m:"Bergiliran",lv:"Sedang"},
+ {id:"obst",ic:"🚧",n:"Obstacle Escape",d:"Hindari rintangan: geser, jongkok, angkat tangan.",c:"#e0701f",m:"Serentak",lv:"Sedang"},
+ {id:"dance",ic:"💃",n:"Body Dance Battle",d:"Ikuti gerakan yang tampil di layar.",c:"#8a3ee0",m:"Bergiliran",lv:"Sedang"},
+ {id:"pose",ic:"🧍",n:"Follow the Pose",d:"Tirukan pose target sebelum waktu habis.",c:"#12a37a",m:"Bergiliran",lv:"Mudah"},
+ {id:"bal",ic:"⚖️",n:"Balance Challenge",d:"Tahan pose tertentu beberapa detik.",c:"#2a7fb8",m:"Bergiliran",lv:"Sulit"},
+ {id:"dodge",ic:"☄️",n:"Dodge the Ball",d:"Hindari bola virtual dengan gerakan tubuh.",c:"#c0392b",m:"Serentak",lv:"Sulit"}];
+const BANK=[["7 + 5 = ?","12","11"],["Ibu kota Indonesia?","Jakarta","Bandung"],["Hewan yang bertelur?","Ayam","Kucing"],["9 x 3 = ?","27","24"],["Planet tempat kita tinggal?","Bumi","Mars"]];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const show=id=>{$$(".view").forEach(v=>v.classList.toggle("on",v.id===id))};
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)show(g.dataset.go)});
+let game=GAMES[0],mode="serentak";
+$("#cards").innerHTML=GAMES.map((g,i)=>`<button class="card" style="--c:${g.c}" data-i="${i}"><span class="ic" aria-hidden="true">${g.ic}</span><b>${g.n}</b><span>${g.d}</span><div class="tags"><span class="tag">${g.m}</span><span class="tag">${g.lv}</span>${g.ready?"":'<span class="tag soon">Segera</span>'}</div></button>`).join("");
+$("#cards").onclick=e=>{const c=e.target.closest(".card");if(!c)return;game=GAMES[c.dataset.i];$("#setupTitle").textContent="Persiapan: "+game.n;mode=game.m.toLowerCase();$$("#modeSeg .btn").forEach(b=>b.classList.toggle("sel",b.dataset.mode===mode));show("setup")};
+$("#modeSeg").onclick=e=>{const b=e.target.closest(".btn");if(!b)return;mode=b.dataset.mode;$$("#modeSeg .btn").forEach(x=>x.classList.toggle("sel",x===b))};
+let qi,score,right,t0,tm,paused,locked,total=10000,left;
+function countdown(msg,cb){const o=$("#over");$("#resume").hidden=true;$("#ovmsg").textContent=msg;o.classList.add("on");let n=3;$("#cnt").textContent=n;const iv=setInterval(()=>{n--;if(n>0)$("#cnt").textContent=n;else{clearInterval(iv);o.classList.remove("on");cb()}},800)}
+$("#startPlay").onclick=()=>{if(!game.ready){alert(game.n+" dibuat di tahap berikutnya. Coba Jump to Answer dulu.");return}show("play");qi=0;score=0;right=0;$("#sc").textContent=0;countdown("Bersiap!",nextQ)};
+let cur;
+function nextQ(){if(qi>=BANK.length)return finish();const q=BANK[qi],flip=Math.random()<.5;cur={ans:flip?"L":"R"};$("#qn").textContent=qi+1;$("#qtext").textContent=q[0];$("#aL").textContent=flip?q[1]:q[2];$("#aR").textContent=flip?q[2]:q[1];$$(".zone").forEach(z=>z.className="zone");locked=false;left=total;t0=performance.now();tick()}
+function tick(){cancelAnimationFrame(tm);const f=()=>{if(paused)return;const r=left-(performance.now()-t0);$("#tbar").style.transform=`scaleX(${Math.max(r,0)/total})`;if(r<=0)return pick(null);tm=requestAnimationFrame(f)};tm=requestAnimationFrame(f)}
+function pick(side){if(locked)return;locked=true;cancelAnimationFrame(tm);const ok=side===cur.ans;if(ok){right++;score+=10+Math.round(Math.max(left-(performance.now()-t0),0)/total*3)}
+ if(side)$("#z"+side).classList.add(ok?"ok":"no");$("#z"+cur.ans).classList.add("ok");$("#sc").textContent=score;qi++;setTimeout(nextQ,1400)}
+$("#zL").onclick=()=>pick("L");$("#zR").onclick=()=>pick("R");
+addEventListener("keydown",e=>{if(!$("#play").classList.contains("on"))return;if(e.key==="ArrowLeft")pick("L");if(e.key==="ArrowRight")pick("R")});
+$("#pause").onclick=()=>{if(locked||paused)return;paused=true;left-=performance.now()-t0;cancelAnimationFrame(tm);$("#ovmsg").textContent="Jeda";$("#cnt").textContent="⏸";$("#resume").hidden=false;$("#over").classList.add("on")};
+$("#resume").onclick=()=>{paused=false;$("#over").classList.remove("on");t0=performance.now();tick()};
+$("#stop").onclick=()=>{cancelAnimationFrame(tm);paused=false;$("#over").classList.remove("on");show("menu")};
+const H=()=>{try{return JSON.parse(localStorage.getItem("ppmg")||"[]")}catch(e){return[]}};
+function finish(){const h=H();h.unshift({g:game.n,s:score,r:right,n:BANK.length,d:new Date().toLocaleString("id-ID")});try{localStorage.setItem("ppmg",JSON.stringify(h.slice(0,20)))}catch(e){}
+ $("#final").textContent=score;$("#detail").textContent=`Benar ${right} dari ${BANK.length} soal. Di layar ini skor dihitung untuk satu kelompok.`;renderH();show("result")}
+function renderH(){const h=H();$("#hist").innerHTML=h.length?h.slice(0,5).map(x=>`<tr><td>${x.g}</td><td>${x.s} poin</td><td>${x.r}/${x.n}</td><td>${x.d}</td></tr>`).join(""):"<tr><td>Belum ada riwayat.</td></tr>"}
+$("#clr").onclick=()=>{try{localStorage.removeItem("ppmg")}catch(e){}renderH()};
+$("#again").onclick=()=>$("#startPlay").click();
+renderH();
+</script>
+</body>
+</html>
