@@ -66,6 +66,14 @@ textarea{height:8em;resize:vertical}
 .table{width:100%;border-collapse:collapse}
 .table td,.table th{padding:.3em .6em;border-bottom:2px solid #fff3;text-align:left}
 .score{font-size:min(30vw,220px);font-weight:800;color:var(--sun);text-shadow:0 .05em 0 var(--pink);line-height:1}
+.cam canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:.8em;display:none;background:#000}
+.cam.live canvas{display:block}.cam.live::after,.cam.live>div{display:none}.cam.live{border-style:solid;border-color:var(--mint)}
+.cam i:first-of-type{left:.6em}.cam i+i{right:.6em}
+#msg{font-size:.75em;padding:.4em .8em;border-radius:.6em;background:#ffffff1f;min-height:1.9em}#msg.bad{background:var(--red)}
+.dot.ok{background:var(--mint)}.calbtns{display:flex;gap:.5em;flex-wrap:wrap}.calbtns .btn{font-size:.75em}
+#vid{position:fixed;width:2px;height:2px;opacity:0;pointer-events:none}
+#pc{display:none;position:fixed;left:50%;translate:-50% 0;bottom:1.5vh;width:24vw;border-radius:.8em;border:3px solid var(--mint);z-index:5}
+body.camon #pc{display:block}.zone.hot{filter:brightness(1.4)}#live{font-size:.7em}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -105,19 +113,21 @@ textarea{height:8em;resize:vertical}
 
 <section class="view" id="calib">
   <div class="top"><h2>Kalibrasi</h2><button class="btn ghost" data-go="setup">Kembali</button></div>
-  <div class="cam"><i>KIRI</i><div><b>Pratinjau kamera muncul di sini</b><br><small>Kamera aktif mulai Tahap 2</small></div></div>
+  <div class="cam" id="camBox"><canvas id="cc"></canvas><i>KIRI</i><i>KANAN</i><div><b>Pratinjau kamera muncul di sini</b><br><small>Tekan Aktifkan kamera</small></div></div>
   <div class="row" style="margin-top:2vh;align-items:center">
-    <div><span class="stat"><span class="dot"></span>Kamera belum aktif</span><br><span class="stat">Pose terdeteksi: 0</span></div>
+    <div><button class="btn" id="camBtn">Aktifkan kamera</button><br><span class="stat"><span class="dot" id="dot"></span><span id="det">Kamera belum aktif</span></span></div>
+    <div class="calbtns"><button class="btn ghost" id="recL">Rekam posisi KIRI</button><button class="btn ghost" id="recR">Rekam posisi KANAN</button><button class="btn ghost" id="recX">Atur ulang</button><span class="stat" id="calst">Garis tengah: standar</span></div>
     <div><label for="sens">Sensitivitas gerakan</label><input id="sens" type="range" min="1" max="10" value="5"></div>
     <button class="btn pink" id="startPlay">Mulai main</button>
   </div>
+  <p id="msg" role="status" style="margin-top:1.5vh">Tekan Aktifkan kamera, izinkan akses, lalu berdiri sampai seluruh badan terlihat. Untuk kalibrasi: berdiri di sisi KIRI, tekan Rekam KIRI, lalu pindah ke sisi KANAN dan tekan Rekam KANAN.</p>
 </section>
 
 <section class="view" id="play">
   <div class="hud">
     <span>Soal <b id="qn">1</b>/5</span>
     <div class="bar"><div id="tbar"></div></div>
-    <span>Skor <b id="sc">0</b></span>
+    <span id="live"></span><span>Skor <b id="sc">0</b></span>
     <button class="btn ghost" id="pause">Jeda</button>
     <button class="btn pink" id="stop">Berhenti</button>
   </div>
@@ -126,6 +136,7 @@ textarea{height:8em;resize:vertical}
     <button class="zone" id="zL"><small>KIRI</small><span id="aL"></span></button>
     <button class="zone" id="zR"><small>KANAN</small><span id="aR"></span></button>
   </div>
+<canvas id="pc"></canvas>
 </section>
 
 <section class="view" id="result" style="align-items:center;text-align:center;gap:2vh">
@@ -136,6 +147,7 @@ textarea{height:8em;resize:vertical}
   <div class="row" style="justify-content:center;flex:none"><button class="btn" id="again">Main lagi</button><button class="btn ghost" data-go="menu">Menu utama</button><button class="btn ghost" id="clr">Hapus riwayat</button></div>
 </section>
 
+<video id="vid" playsinline muted></video>
 <div class="over" id="over"><div><div class="count" id="cnt">3</div><p id="ovmsg">Bersiap!</p><button class="btn pink" id="resume" hidden>Lanjut</button></div></div>
 
 <script>
@@ -160,7 +172,7 @@ function countdown(msg,cb){const o=$("#over");$("#resume").hidden=true;$("#ovmsg
 $("#startPlay").onclick=()=>{if(!game.ready){alert(game.n+" dibuat di tahap berikutnya. Coba Jump to Answer dulu.");return}show("play");qi=0;score=0;right=0;$("#sc").textContent=0;countdown("Bersiap!",nextQ)};
 let cur;
 function nextQ(){if(qi>=BANK.length)return finish();const q=BANK[qi],flip=Math.random()<.5;cur={ans:flip?"L":"R"};$("#qn").textContent=qi+1;$("#qtext").textContent=q[0];$("#aL").textContent=flip?q[1]:q[2];$("#aR").textContent=flip?q[2]:q[1];$$(".zone").forEach(z=>z.className="zone");locked=false;left=total;t0=performance.now();tick()}
-function tick(){cancelAnimationFrame(tm);const f=()=>{if(paused)return;const r=left-(performance.now()-t0);$("#tbar").style.transform=`scaleX(${Math.max(r,0)/total})`;if(r<=0)return pick(null);tm=requestAnimationFrame(f)};tm=requestAnimationFrame(f)}
+function tick(){cancelAnimationFrame(tm);const f=()=>{if(paused)return;const r=left-(performance.now()-t0);$("#tbar").style.transform=`scaleX(${Math.max(r,0)/total})`;if(r<=0)return pick(S.on?(S.L>S.R?"L":S.R>S.L?"R":null):null);tm=requestAnimationFrame(f)};tm=requestAnimationFrame(f)}
 function pick(side){if(locked)return;locked=true;cancelAnimationFrame(tm);const ok=side===cur.ans;if(ok){right++;score+=10+Math.round(Math.max(left-(performance.now()-t0),0)/total*3)}
  if(side)$("#z"+side).classList.add(ok?"ok":"no");$("#z"+cur.ans).classList.add("ok");$("#sc").textContent=score;qi++;setTimeout(nextQ,1400)}
 $("#zL").onclick=()=>pick("L");$("#zR").onclick=()=>pick("R");
@@ -175,6 +187,58 @@ function renderH(){const h=H();$("#hist").innerHTML=h.length?h.slice(0,5).map(x=
 $("#clr").onclick=()=>{try{localStorage.removeItem("ppmg")}catch(e){}renderH()};
 $("#again").onclick=()=>$("#startPlay").click();
 renderH();
+
+/* ===== Tahap 2: kamera + MediaPipe Pose Landmarker (semua diproses di perangkat) ===== */
+const MP="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+const MODEL="https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task";
+const S={on:false,poses:[],L:0,R:0,M:0,c:.5,dz:.06,calL:null,calR:null,rec:null};
+let lib,pl,stream,raf,lastT=-1;const vid=$("#vid");
+function say(t,bad){const m=$("#msg");m.textContent=t;m.className=bad?"bad":""}
+function camErr(e){const n=e&&e.name;return n==="NotAllowedError"||n==="SecurityError"?"Izin kamera ditolak. Klik ikon gembok di kolom alamat, izinkan Kamera, lalu muat ulang halaman.":n==="NotFoundError"||n==="OverconstrainedError"?"Kamera tidak ditemukan. Pastikan kamera PID tersambung dan dikenali sistem, lalu coba lagi.":n==="NotReadableError"?"Kamera sedang dipakai aplikasi lain (misalnya Zoom). Tutup aplikasi itu lalu coba lagi.":"Kamera tidak bisa dibuka: "+((e&&e.message)||n)}
+async function camOn(){
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.isSecureContext){say("Kamera hanya bisa dipakai lewat HTTPS atau localhost. Buka aplikasi lewat alamat https:// GitHub Pages.",1);return}
+ const b=$("#camBtn");b.disabled=true;say("Meminta izin kamera... pilih Izinkan pada kotak yang muncul.");
+ try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:"user"},audio:false})}catch(e){say(camErr(e),1);b.disabled=false;return}
+ vid.srcObject=stream;try{await vid.play()}catch(e){}
+ say("Memuat model deteksi tubuh (perlu internet, hanya saat pertama kali)...");
+ try{if(!pl){lib=await import(MP+"/vision_bundle.mjs");const fs=await lib.FilesetResolver.forVisionTasks(MP+"/wasm");
+  const mk=d=>lib.PoseLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:MODEL,delegate:d},runningMode:"VIDEO",numPoses:4});
+  try{pl=await mk("GPU")}catch(e){pl=await mk("CPU")}}}
+ catch(e){say("Model deteksi gagal dimuat. Periksa koneksi internet lalu coba lagi.",1);camOff(1);return}
+ S.on=true;b.disabled=false;b.textContent="Matikan kamera";$("#camBox").classList.add("live");document.body.classList.add("camon");
+ say("Kamera aktif. Berdirilah sampai seluruh badan terlihat di layar.");loop()}
+function camOff(keep){S.on=false;cancelAnimationFrame(raf);if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;vid.srcObject=null;S.poses=[];S.L=S.R=S.M=0;
+ $("#camBox").classList.remove("live");document.body.classList.remove("camon");const b=$("#camBtn");b.textContent="Aktifkan kamera";b.disabled=false;
+ $("#live").textContent="";$("#det").textContent="Kamera belum aktif";$("#dot").className="dot";if(!keep)say("Kamera dimatikan.")}
+$("#camBtn").onclick=()=>S.on?camOff():camOn();
+function recompute(){const k=+$("#sens").value;if(S.calL!=null&&S.calR!=null){S.c=(S.calL+S.calR)/2;S.dz=Math.max(.02,(S.calR-S.calL)/2*(.6-.05*k));$("#calst").textContent="Garis tengah: dikalibrasi"}
+ else{S.c=.5;S.dz=.02+(10-k)*.008;$("#calst").textContent="Garis tengah: standar"}}
+$("#sens").oninput=recompute;
+function rec(side){if(!S.on){say("Aktifkan kamera dulu.",1);return}if(!S.poses.length){say("Belum ada tubuh terdeteksi. Berdirilah di depan kamera dulu.",1);return}
+ S.rec={side,sum:0,n:0,until:performance.now()+1200};say("Merekam posisi "+(side==="L"?"KIRI":"KANAN")+"... tetap berdiri 1 detik.")}
+$("#recL").onclick=()=>rec("L");$("#recR").onclick=()=>rec("R");
+$("#recX").onclick=()=>{S.calL=S.calR=null;recompute();say("Kalibrasi diatur ulang ke garis tengah standar.")};
+function recDone(){const r=S.rec;S.rec=null;if(r.n<5){say("Tubuh tidak terbaca stabil. Coba rekam lagi.",1);return}
+ const x=r.sum/r.n;if(r.side==="L")S.calL=x;else S.calR=x;
+ if(S.calL!=null&&S.calR!=null&&S.calR-S.calL<.12){const w=r.side;S.calL=S.calR=null;recompute();say("Posisi kiri dan kanan terlalu dekat. Berdirilah lebih jauh ke tepi masing-masing sisi, lalu rekam ulang.",1);return}
+ recompute();say(S.calL!=null&&S.calR!=null?"Kalibrasi selesai. Garis tengah sudah diatur.":"Posisi "+(r.side==="L"?"KIRI":"KANAN")+" tersimpan. Sekarang rekam sisi satunya.")}
+function loop(){if(!S.on)return;raf=requestAnimationFrame(loop);
+ const inPlay=$("#play").classList.contains("on");if(!inPlay&&!$("#calib").classList.contains("on"))return;
+ if(vid.readyState<2||vid.currentTime===lastT)return;lastT=vid.currentTime;
+ const r=pl.detectForVideo(vid,performance.now()),P=[];
+ for(const lm of r.landmarks){let h=[lm[23],lm[24]].filter(q=>q&&q.visibility>.4);if(!h.length)h=[lm[11],lm[12]].filter(q=>q&&q.visibility>.4);if(!h.length)continue;P.push({lm,x:1-h.reduce((a,q)=>a+q.x,0)/h.length})}
+ let L=0,R=0,M=0;for(const q of P){q.side=q.x<S.c-S.dz?"L":q.x>S.c+S.dz?"R":"M";q.side==="L"?L++:q.side==="R"?R++:M++}
+ S.poses=P;S.L=L;S.R=R;S.M=M;
+ if(S.rec){if(P.length){S.rec.sum+=P.reduce((a,q)=>a+q.x,0)/P.length;S.rec.n++}if(performance.now()>S.rec.until)recDone()}
+ draw(inPlay);ui(inPlay)}
+function draw(inPlay){const cv=inPlay?$("#pc"):$("#cc"),w=vid.videoWidth,h=vid.videoHeight;if(!w)return;if(cv.width!==w){cv.width=w;cv.height=h}
+ const x=cv.getContext("2d");x.save();x.translate(w,0);x.scale(-1,1);x.drawImage(vid,0,0,w,h);const du=cv._du||(cv._du=new lib.DrawingUtils(x));
+ const col={L:"#38bdf8",R:"#ff9a3d",M:"#ffd23f"};for(const q of S.poses){du.drawConnectors(q.lm,lib.PoseLandmarker.POSE_CONNECTIONS,{color:col[q.side],lineWidth:5});du.drawLandmarks(q.lm,{color:"#fff",radius:3})}
+ x.restore();const cx=S.c*w,d=S.dz*w;x.fillStyle="#ffd23f30";x.fillRect(cx-d,0,2*d,h);x.strokeStyle="#ffd23f";x.lineWidth=4;x.setLineDash([14,10]);x.beginPath();x.moveTo(cx,0);x.lineTo(cx,h);x.stroke();x.setLineDash([])}
+function ui(inPlay){const n=S.poses.length;$("#dot").className="dot"+(n?" ok":"");
+ $("#det").textContent=n?`Tubuh terdeteksi: ${n} (kiri ${S.L}, tengah ${S.M}, kanan ${S.R})`:"Belum ada tubuh terdeteksi. Mundur sampai badan terlihat.";
+ if(inPlay){$("#live").textContent=`Kiri ${S.L} | Kanan ${S.R} | dikunci saat waktu habis`;if(!S.rec){$("#zL").classList.toggle("hot",!locked&&S.L>S.R);$("#zR").classList.toggle("hot",!locked&&S.R>S.L)}}}
+recompute();
 </script>
 </body>
 </html>
