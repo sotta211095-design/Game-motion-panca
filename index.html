@@ -11,7 +11,7 @@
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{font-family:var(--f);color:var(--ink);background:radial-gradient(ellipse at 50% 0,var(--night2),var(--night) 70%);overflow:hidden;font-size:clamp(18px,2.2vw,30px)}
-.beams{position:fixed;inset:0;pointer-events:none;background:conic-gradient(from 200deg at 15% -5%,transparent 0 8%,#ffd23f26 10%,transparent 14%),conic-gradient(from 160deg at 85% -5%,transparent 0 8%,#38bdf826 10%,transparent 14%)}
+.beams{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 .view{display:none;position:absolute;inset:0;padding:3vh 4vw;flex-direction:column;overflow:auto}
 .view.on{display:flex}
 h1,h2{font-weight:800;line-height:1}
@@ -74,20 +74,136 @@ textarea{height:8em;resize:vertical}
 #vid{position:fixed;width:2px;height:2px;opacity:0;pointer-events:none}
 #pc{display:none;position:fixed;left:50%;translate:-50% 0;bottom:1.5vh;width:24vw;border-radius:.8em;border:3px solid var(--mint);z-index:5}
 body.camon #pc{display:block}.zone.hot{filter:brightness(1.4)}#live{font-size:.7em}
+#cf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
+#fb{display:none;position:fixed;left:50%;top:50%;translate:-50% -50%;z-index:8;text-align:center;border-radius:1.2em;padding:.5em 1.2em;width:min(92vw,900px);box-shadow:0 .3em 0 #0006,inset 0 0 0 4px #fff5;color:var(--night)}
+#fb.on{display:block;animation:pop2 .5s}
+#fb.good{background:linear-gradient(var(--sun),#ffb300)}#fb.bad{background:linear-gradient(#ff8a8a,#e04848);color:#fff}
+#fb h3{font-size:2.3em;line-height:1.05}#fb .pts{font-size:3em;font-weight:800;line-height:1.1}#fb p{font-size:.8em}
+@keyframes pop2{0%{scale:.3}70%{scale:1.1}100%{scale:1}}
+.stats{display:flex;gap:2vw;flex-wrap:wrap;justify-content:center}.stats div{background:#ffffff1a;border-radius:1em;padding:.2em 1em;min-width:5.5em}.stats b{display:block;font-size:1.6em}.stats span{font-size:.65em}
+#pred{font-size:2.8em;color:var(--sun)}
+#pgame{padding:0}.pbody{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:2vw;padding:2vh 3vw;min-height:0}
+.ptarget{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1vh;text-align:center}
+#wall{width:min(40vw,46vh);aspect-ratio:1;border-radius:1em;background:repeating-linear-gradient(0deg,#b4492f 0 22px,#8f3722 22px 24px);padding:12%;box-shadow:0 .3em 0 #0006;transform-origin:50% 100%}
+#wall svg{background:#17104f;border-radius:.8em;width:100%;height:100%}
+#wall.go{animation:wallin var(--d) linear forwards}#wall.paused{animation-play-state:paused}
+@keyframes wallin{from{scale:.4}to{scale:1}}
+#pname{font-size:1.7em;line-height:1.1}#pnow{font-size:.6em;opacity:.85;min-height:1.4em}
+#hold{width:min(40vw,46vh);height:1em;border-radius:99px;background:#fff3;overflow:hidden}#hold div{height:100%;width:0;background:var(--sun)}
+#kc{width:100%;max-height:100%;object-fit:contain;border-radius:1em;border:4px solid var(--mint);background:#000;align-self:center}
+@media(max-width:700px){.pbody{grid-template-columns:1fr}}
+.beams::before,.beams::after{content:"";position:absolute;top:-10%;width:70vw;height:140%;background:conic-gradient(from 180deg at 50% 0,transparent 0 44%,#ffd23f30 48%,transparent 52%);transform-origin:50% 0;animation:sway 7s ease-in-out infinite alternate}
+.beams::before{left:-20vw}.beams::after{right:-20vw;background:conic-gradient(from 180deg at 50% 0,transparent 0 44%,#38bdf830 48%,transparent 52%);animation-delay:-3.5s}
+@keyframes sway{from{rotate:-16deg}to{rotate:16deg}}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(#fff 1px,transparent 1.5px) 0 0/97px 97px,radial-gradient(#fff 1px,transparent 1.5px) 40px 60px/131px 131px;opacity:.14;animation:tw 4s ease-in-out infinite alternate}
+@keyframes tw{to{opacity:.32}}
+.logo{animation:bob 3s ease-in-out infinite;text-shadow:0 .06em 0 var(--pink),0 0 .6em #ff3d8b99,0 .12em 0 #0004}
+@keyframes bob{50%{translate:0 -1.2vh}}
+.btn{position:relative;overflow:hidden}.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(#ffffff55,transparent 55%);pointer-events:none}
+.btn.big{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{scale:1.06}}
+.card{animation:rise .5s both}.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.18s}.card:nth-child(5){animation-delay:.24s}.card:nth-child(6){animation-delay:.3s}.card:nth-child(7){animation-delay:.36s}
+@keyframes rise{from{opacity:0;translate:0 4vh}}
+.card:hover{box-shadow:inset 0 0 0 3px #fff6,0 0 2em var(--c),0 .3em 0 #0005}
+.q{background:#ffffff14;border-radius:1em;margin:1vh 3vw;box-shadow:inset 0 0 0 3px #fff2}
+.zone{position:relative;overflow:hidden}.zone::after{content:"";position:absolute;inset:0;background:linear-gradient(#ffffff2e,transparent 45%);pointer-events:none}
+
+.bar div.low{background:var(--red)}
+#aud{position:fixed;left:1vw;bottom:1vh;z-index:40;display:flex;gap:.3em;align-items:center;background:#0006;border-radius:99px;padding:.15em .6em}
+#aud button{font:inherit;background:none;border:0;cursor:pointer;font-size:1em;color:#fff;padding:0 .2em}#aud input{width:7em;padding:0}
+#agame{padding:0}.abody{flex:1;min-height:0;display:flex;padding:1vh 2vw}
+#ac{max-width:100%;max-height:100%;margin:auto;aspect-ratio:16/9;border-radius:1em;border:4px solid var(--mint);background:#0b0830}
+#bg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.view{z-index:1;animation:vin .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes vin{from{opacity:0;translate:0 3vh;scale:.98}}
+@keyframes spin{to{rotate:360deg}}
+#splash::before{content:"";position:absolute;width:min(95vw,95vh);aspect-ratio:1;border-radius:50%;background:conic-gradient(#ff3d8b00,#ff3d8b66,#38bdf866,#ffd23f66,#ff3d8b00);filter:blur(34px);animation:spin 14s linear infinite;z-index:-1}
+.logo{scale:calc(1 + var(--pu,0)*.05)}
+.logo span{display:inline-block;animation:lt 2.4s ease-in-out infinite;animation-delay:calc(var(--i)*.09s)}
+@keyframes lt{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -1.6vh;rotate:-3deg}}
+.beams{opacity:calc(.75 + var(--pu,0)*.5)}
+.card{position:relative;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 45%,#0007)}
+.card .ic{display:inline-block;font-size:3.2em;animation:flo 3s ease-in-out infinite;filter:drop-shadow(0 .1em .15em #0006)}
+@keyframes flo{50%{translate:0 -.15em;rotate:6deg}}
+.card::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,#ffffff45 50%,transparent 60%);translate:-120% 0;transition:translate .7s;pointer-events:none}.card:hover::before{translate:120% 0}
+.arena{background:radial-gradient(ellipse at 50% 100%,#ffffff22,transparent 60%),repeating-linear-gradient(90deg,#ffffff0d 0 2px,transparent 2px 80px);box-shadow:inset 0 0 calc(var(--pu,0)*5vw) #ffffff44}
+.zone{transition:background .2s,filter .2s,scale .15s,box-shadow .15s}
+.zone.hot{filter:brightness(1.35) saturate(1.25);box-shadow:inset 0 0 6vw #fffb;scale:1.025}
+.q{border:3px solid transparent;background:linear-gradient(#2a1a86dd,#17104fdd) padding-box,linear-gradient(90deg,var(--pink),var(--sun),var(--sky),var(--pink)) border-box;background-size:auto,300% 100%;animation:bsl 5s linear infinite}
+@keyframes bsl{to{background-position:0 0,300% 0}}
+.hud{background:linear-gradient(#0009,#0004);border-bottom:3px solid #ffffff25;backdrop-filter:blur(6px)}.hud b{color:var(--sun);display:inline-block}
+.pop{animation:popn .5s}@keyframes popn{40%{scale:1.7;color:#fff}}
+.bar{height:1.1em;box-shadow:inset 0 0 0 2px #fff3}.bar div{background:linear-gradient(90deg,var(--mint),var(--sun))}
+.bar div.low{background:linear-gradient(90deg,var(--red),#ff9a3d);animation:blink .5s infinite alternate}@keyframes blink{to{opacity:.55}}
+#fb::before{content:"";position:fixed;left:50%;top:50%;width:170vmax;height:170vmax;translate:-50% -50%;background:repeating-conic-gradient(#ffffff1c 0 8deg,transparent 8deg 16deg);animation:spin 14s linear infinite;z-index:-1;pointer-events:none}
+#fb.bad::before{background:repeating-conic-gradient(#ff4d4d24 0 8deg,transparent 8deg 16deg)}#fb h3{text-shadow:0 .05em 0 #0003}
+.shake{animation:shk .45s}@keyframes shk{20%{translate:-1.2vw 0}40%{translate:1.2vw 0}60%{translate:-.8vw 0}80%{translate:.8vw 0}}
+#flash{position:fixed;inset:0;pointer-events:none;z-index:7;opacity:0}
+#flash.g{background:radial-gradient(#2ee6a6bb,transparent 70%);animation:fl .6s}#flash.r{background:radial-gradient(#ff4d4dbb,transparent 70%);animation:fl .6s}
+@keyframes fl{0%{opacity:1}100%{opacity:0}}
+#toast{position:fixed;top:2vh;left:50%;translate:-50% 0;z-index:50;background:#000d;border:3px solid var(--sun);border-radius:99px;padding:.3em 1.1em;font-size:.75em;display:none;max-width:92vw;text-align:center}#toast.on{display:block;animation:vin .3s}
+#stars{display:flex;gap:.2em;justify-content:center}.st{display:inline-block;font-size:3.4em;filter:grayscale(1) brightness(.45);transition:filter .4s}.st.on{filter:drop-shadow(0 0 .3em #ffd23f);animation:popn .7s}
+.table tr:nth-child(even){background:#ffffff0d}
+.cam,#kc,#ac,#pc{box-shadow:0 0 2em #2ee6a688,inset 0 0 0 2px #fff3}
+#camsel{margin-top:.3em;font-size:.6em}
+#bank input[type=text]{font:inherit;width:100%;border-radius:.6em;border:0;padding:.4em .6em;background:#fff;color:var(--night)}
+#pout,#paste{height:9em;font-size:.7em}#bank .panel{margin-bottom:2vh}a.btn{text-decoration:none;display:inline-block}
+.pq{font-size:.65em;padding:.15em 0;border-bottom:1px solid #fff3}.err{color:#ffb4b4;font-size:.65em}
+.bset{display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border-bottom:2px solid #fff3;padding:.3em 0}.bset b{flex:1 1 12em;font-size:.8em}.bset .btn{font-size:.6em}
+.chk{display:flex;gap:.5em;align-items:center;font-size:.7em}.chk input{width:1.2em;height:1.2em}
+.ans{display:flex;flex-direction:column;justify-content:center;gap:.5em;background:#17104f;border-radius:.8em;height:100%;padding:.4em;font-size:.6em}.ans div{background:#ffffff1a;border-radius:.6em;padding:.3em}.ans b{display:block;font-size:1.3em;color:var(--sun)}
+
+.ic-s{width:1em;height:1em;vertical-align:-.15em;display:inline-block}
+button[data-ico] svg,.ico svg{width:1.1em;height:1.1em;vertical-align:-.2em;margin-right:.2em}
+.logo{text-shadow:none}
+.logo span{background:linear-gradient(#fff 0%,#ffe45c 42%,#ff9a1f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 .05em 0 #a01a52) drop-shadow(0 0 .22em #ff3d8b99)}
+#smc{width:min(24vw,26vh);animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 .4em .5em #0008)}#rmc{width:min(22vw,24vh)}
+#smc svg,#rmc svg,.mc svg{width:100%;height:auto;display:block}
+.mc{position:absolute;left:50%;top:0;translate:-50% -84%;width:min(20vw,22vh);pointer-events:none;filter:drop-shadow(0 .25em .25em #0006);animation:mcb .55s cubic-bezier(.2,1.6,.3,1)}
+@keyframes mcb{from{scale:.2;opacity:0}}
+.card .ic{display:block;align-self:center;position:relative;font-size:1em}.card .ic svg{width:min(14vw,4.4em);height:auto;filter:drop-shadow(0 .12em .18em #0007)}
+.card .ic::before{content:"";position:absolute;inset:-.5em;background:radial-gradient(#ffffff66,transparent 65%);z-index:-1}
+.card .tag{display:inline-flex;align-items:center;gap:.15em}
+.zarr{position:absolute;width:38%;opacity:.17;top:50%;translate:0 -50%;pointer-events:none}
+#zL .zarr{left:4%;animation:nz 1.2s ease-in-out infinite}#zR .zarr{right:4%;rotate:180deg;animation:nz 1.2s ease-in-out infinite}
+@keyframes nz{50%{transform:translateX(-14%)}}
+#alv svg{width:1.25em;height:1.25em;margin:0 .05em;vertical-align:-.25em}
+#cnt svg{width:.8em;height:.8em}
+#pred svg{width:1.1em;height:1.1em;vertical-align:-.22em;animation:bob 1.5s ease-in-out infinite}
+.st svg{width:1em;height:1em}
+.ans svg{width:1.3em;height:1.3em;vertical-align:-.3em}.hm{display:inline-block;transform:scaleX(-1)}
+#rank tr:nth-child(-n+4) td:first-child::after{content:"";display:inline-block;width:.8em;height:.8em;border-radius:50%;margin-left:.35em;vertical-align:-.1em}
+#rank tr:nth-child(2) td:first-child::after{background:radial-gradient(circle at 35% 30%,#fff,#ffd23f 45%,#b8860b);box-shadow:0 0 .5em #ffd23f}
+#rank tr:nth-child(3) td:first-child::after{background:radial-gradient(circle at 35% 30%,#fff,#cfd8e6 45%,#7d8aa0)}
+#rank tr:nth-child(4) td:first-child::after{background:radial-gradient(circle at 35% 30%,#ffe0c0,#e0904a 45%,#8a4a1a)}
+#wall{box-shadow:inset 0 0 0 4px #ffffff30,inset 0 .5em 0 #ffffff1f,0 .3em 0 #0006,0 0 3em #ff3d8b44}
+#aud button{position:relative;width:2em;height:2em;padding:.25em}#aud button svg{width:100%;height:100%;display:block;margin:0}#aud button.off{opacity:.6}
+#aud button.off::after{content:"";position:absolute;left:10%;right:10%;top:50%;border-top:3px solid #ff4d4d;rotate:-45deg}
+.logo{font-size:clamp(40px,min(8vw,13vh),130px)}#splash{gap:2.5vh}#smc{width:min(17vw,21vh)}
+#zL.ok,#zR.ok{background:linear-gradient(#6dffc9,#12a37a);color:var(--night)}
+#zL.no,#zR.no{background:linear-gradient(#ff8a8a,#c92a2a)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="beams" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".5" stop-color="#ffd23f"/><stop offset="1" stop-color="#ff9a1f"/></linearGradient>
+<linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc27a"/><stop offset=".5" stop-color="#ff7a1f"/><stop offset="1" stop-color="#b84a00"/></linearGradient>
+<linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ee0ff"/><stop offset=".5" stop-color="#38bdf8"/><stop offset="1" stop-color="#1a6fd0"/></linearGradient>
+<linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ff5d0"/><stop offset=".5" stop-color="#2ee6a6"/><stop offset="1" stop-color="#0d9a6b"/></linearGradient>
+<linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a9a"/><stop offset=".5" stop-color="#ff4d4d"/><stop offset="1" stop-color="#a01c2c"/></linearGradient>
+<linearGradient id="gPurple" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a0ff"/><stop offset=".5" stop-color="#8a3ee0"/><stop offset="1" stop-color="#4a1a96"/></linearGradient>
+</defs></svg>
+<canvas id="bg" aria-hidden="true"></canvas><div class="beams" aria-hidden="true"></div>
 
 <section class="view on" id="splash">
+  <div id="smc"></div>
   <h1 class="logo"><small>Game gerak seru</small>Pak Panca<br>Motion Game</h1>
   <p>Berdiri di depan kamera, bergeraklah, dan jawab dengan tubuhmu!</p>
   <button class="btn pink big" data-go="menu">MULAI</button>
 </section>
 
 <section class="view" id="menu">
-  <div class="top"><h2>Pilih Game</h2><button class="btn ghost" data-go="splash">Beranda</button></div>
+  <div class="top"><h2>Pilih Game</h2><div class="calbtns"><button class="btn" data-go="bank" data-ico="book"> Bank Soal</button><button class="btn ghost" data-go="splash">Beranda</button></div></div>
   <div class="grid" id="cards"></div>
 </section>
 
@@ -105,6 +221,10 @@ body.camon #pc{display:block}.zone.hot{filter:brightness(1.4)}#live{font-size:.7
       <select id="sub"><option>Matematika dasar</option><option>Bahasa Indonesia</option><option>IPAS</option></select>
       <label for="lvl">Kelas</label>
       <select id="lvl"><option>Kelas 1-2</option><option>Kelas 3-4</option><option>Kelas 5-6</option></select>
+      <label for="nq">Jumlah soal / pose</label><select id="nq"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option><option>40</option><option>50</option></select>
+      <label for="src">Sumber soal</label><select id="src"><option value="">Bank bawaan (sesuai mapel dan kelas)</option></select>
+      <label class="chk"><input type="checkbox" id="quiz"> Mode kuis di game gerak: soal ikut dimainkan di 6 game lainnya</label>
+      <button class="btn ghost" data-go="bank" data-ico="book"> Buat atau kelola soal sendiri</button>
       <p style="font-size:.7em">Area bermain harus bebas dari meja, kursi, dan kabel. Cukup geser badan atau melangkah ke samping, tidak perlu melompat tinggi.</p>
       <button class="btn pink" data-go="calib">Cek kamera</button>
     </div>
@@ -115,7 +235,7 @@ body.camon #pc{display:block}.zone.hot{filter:brightness(1.4)}#live{font-size:.7
   <div class="top"><h2>Kalibrasi</h2><button class="btn ghost" data-go="setup">Kembali</button></div>
   <div class="cam" id="camBox"><canvas id="cc"></canvas><i>KIRI</i><i>KANAN</i><div><b>Pratinjau kamera muncul di sini</b><br><small>Tekan Aktifkan kamera</small></div></div>
   <div class="row" style="margin-top:2vh;align-items:center">
-    <div><button class="btn" id="camBtn">Aktifkan kamera</button><br><span class="stat"><span class="dot" id="dot"></span><span id="det">Kamera belum aktif</span></span></div>
+    <div><button class="btn" id="camBtn">Aktifkan kamera</button><br><select id="camsel" aria-label="Pilih kamera"><option value="">Kamera otomatis</option></select><br><span class="stat"><span class="dot" id="dot"></span><span id="det">Kamera belum aktif</span></span></div>
     <div class="calbtns"><button class="btn ghost" id="recL">Rekam posisi KIRI</button><button class="btn ghost" id="recR">Rekam posisi KANAN</button><button class="btn ghost" id="recX">Atur ulang</button><span class="stat" id="calst">Garis tengah: standar</span></div>
     <div><label for="sens">Sensitivitas gerakan</label><input id="sens" type="range" min="1" max="10" value="5"></div>
     <button class="btn pink" id="startPlay">Mulai main</button>
@@ -125,67 +245,253 @@ body.camon #pc{display:block}.zone.hot{filter:brightness(1.4)}#live{font-size:.7
 
 <section class="view" id="play">
   <div class="hud">
-    <span>Soal <b id="qn">1</b>/5</span>
+    <span>Soal <b id="qn">1</b></span>
     <div class="bar"><div id="tbar"></div></div>
-    <span id="live"></span><span>Skor <b id="sc">0</b></span>
-    <button class="btn ghost" id="pause">Jeda</button>
+    <span id="live"></span><span><i class="ico" data-ico="starS"></i> Skor <b id="sc">0</b></span>
+    <button class="btn ghost" id="pause" data-ico="pause"> Jeda</button>
     <button class="btn pink" id="stop">Berhenti</button>
   </div>
   <div class="q" id="qtext"></div>
   <div class="arena">
-    <button class="zone" id="zL"><small>KIRI</small><span id="aL"></span></button>
-    <button class="zone" id="zR"><small>KANAN</small><span id="aR"></span></button>
+    <button class="zone" id="zL"><span class="zarr" data-ico="chev"></span><small>KIRI</small><span id="aL"></span></button>
+    <button class="zone" id="zR"><span class="zarr" data-ico="chev"></span><small>KANAN</small><span id="aR"></span></button>
   </div>
 <canvas id="pc"></canvas>
 </section>
 
+<section class="view" id="bank">
+  <div class="top"><h2>Bank Soal Saya</h2><button class="btn ghost" data-go="menu">Kembali</button></div>
+  <div class="panel"><b>1. Buat prompt untuk ChatGPT</b>
+   <div class="row"><div><label for="bk">Kelas</label><select id="bk"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option></select></div>
+   <div><label for="bm">Mata pelajaran</label><select id="bm"><option>Matematika</option><option>Bahasa Indonesia</option><option selected>IPAS</option><option>IPA</option><option>IPS</option><option>PPKn</option><option>Bahasa Inggris</option><option>Seni Budaya</option><option>PJOK</option><option>Pengetahuan umum</option></select></div>
+   <div><label for="bd">Kesulitan</label><select id="bd"><option>Mudah</option><option selected>Sedang</option><option>Sulit</option><option>Campuran</option></select></div>
+   <div><label for="bn">Jumlah soal</label><select id="bn"><option>10</option><option>20</option><option selected>30</option><option>50</option></select></div></div>
+   <label for="bt">Topik atau materi</label><input id="bt" type="text" placeholder="Contoh: daur air, pecahan senilai, kata baku">
+   <label for="bx">Catatan tambahan (boleh kosong)</label><input id="bx" type="text" placeholder="Contoh: gunakan konteks kehidupan sehari-hari di Indonesia">
+   <button class="btn pink" id="mkp">Buat prompt</button>
+   <textarea id="pout" readonly placeholder="Prompt akan muncul di sini"></textarea>
+   <div class="calbtns"><button class="btn" id="cpp">Salin prompt</button><a class="btn ghost" href="https://chatgpt.com/" target="_blank" rel="noopener">Buka ChatGPT</a></div></div>
+  <div class="panel"><b>2. Tempel hasil dari ChatGPT</b>
+   <label for="sn">Nama paket soal (boleh kosong)</label><input id="sn" type="text" placeholder="Contoh: IPAS Daur Air Kelas 5">
+   <textarea id="paste" placeholder="Tempel soal hasil ChatGPT di sini. Satu soal per baris: pertanyaan|jawaban benar|pengecoh"></textarea>
+   <div class="calbtns"><button class="btn pink" id="rd">Baca soal</button><button class="btn" id="sv" disabled>Simpan paket</button></div><div id="pv"></div></div>
+  <div class="panel"><b>3. Paket tersimpan di perangkat ini</b><div id="bl"></div>
+   <p style="font-size:.6em;opacity:.85">Paket tersimpan di browser perangkat ini. Untuk memindahkan ke perangkat lain (misalnya dari HP ke PID), tekan Salin teks, lalu tempel di langkah 2 pada perangkat tujuan.</p></div>
+</section>
+
+<section class="view" id="agame">
+  <div class="hud"><span>Rintangan <b id="an"></b></span><span id="alv"></span><span><i class="ico" data-ico="starS"></i> Skor <b id="asc">0</b></span><button class="btn ghost" id="apause" data-ico="pause"> Jeda</button><button class="btn pink" id="astop">Berhenti</button></div>
+  <div class="abody"><canvas id="ac"></canvas></div>
+</section>
+
+<section class="view" id="pgame">
+  <div class="hud"><span id="pn"></span><div class="bar"><div id="ptbar"></div></div><span><i class="ico" data-ico="starS"></i> Skor <b id="psc">0</b></span><button class="btn ghost" id="ppause" data-ico="pause"> Jeda</button><button class="btn pink" id="pstop">Berhenti</button></div>
+  <div class="pbody"><div class="ptarget"><div id="wall"><div id="psvg"></div></div><h3 id="pname"></h3><div id="hold"><div></div></div><p id="pnow"></p></div><canvas id="kc"></canvas></div>
+</section>
+
 <section class="view" id="result" style="align-items:center;text-align:center;gap:2vh">
-  <h2>Hasil Akhir</h2>
+  <div id="rmc"></div>
+  <h2 id="pred">Hasil Akhir</h2>
+  <p id="who"></p>
+  <div id="stars"><span class="st" data-ico="star"></span><span class="st" data-ico="star"></span><span class="st" data-ico="star"></span></div>
   <div class="score" id="final">0</div>
+  <div class="stats" id="stats"></div>
   <p id="detail"></p>
-  <div class="panel" style="width:min(100%,760px)"><b>Riwayat di perangkat ini</b><table class="table" id="hist"></table></div>
+  <div class="panel" style="width:min(100%,760px)"><b id="rkt">Peringkat</b><table class="table" id="rank"></table></div>
+  <div class="panel" style="width:min(100%,760px)"><b>Riwayat terbaru</b><table class="table" id="hist"></table></div>
   <div class="row" style="justify-content:center;flex:none"><button class="btn" id="again">Main lagi</button><button class="btn ghost" data-go="menu">Menu utama</button><button class="btn ghost" id="clr">Hapus riwayat</button></div>
 </section>
 
 <video id="vid" playsinline muted></video>
+<canvas id="cf"></canvas><div id="flash"></div><div id="toast" role="status"></div><div id="fb" role="status"></div>
+<div id="aud"><button class="mute" data-ico="spk" aria-label="Efek suara"></button><button id="musb" data-ico="note" aria-label="Musik"></button><button id="vcb" data-ico="voice" aria-label="Suara pemandu"></button><button id="fsb" data-ico="full" aria-label="Layar penuh"></button><input id="vol" type="range" min="0" max="100" value="70" aria-label="Volume"></div>
 <div class="over" id="over"><div><div class="count" id="cnt">3</div><p id="ovmsg">Bersiap!</p><button class="btn pink" id="resume" hidden>Lanjut</button></div></div>
 
 <script>
+/* ===== Pustaka ilustrasi vektor (SVG): ikon game, maskot, bintang, hati, piala ===== */
+const ICON={
+ star:'<svg viewBox="0 0 24 24"><path d="M12 2.2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.8l1.4-6.8L2.2 9.3l6.9-.8z" fill="url(#gGold)" stroke="#b86b00" stroke-width=".9" stroke-linejoin="round"/><ellipse cx="9.4" cy="8.3" rx="2.3" ry="1" fill="#fff" opacity=".65" transform="rotate(-30 9.4 8.3)"/></svg>',
+ heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.2 3 4.5 6.6 4.5c2 0 3.6 1.1 5.4 3.2 1.8-2.1 3.4-3.2 5.4-3.2 3.6 0 5.7 3.7 4.2 7.3C19.5 16.4 12 21 12 21z" fill="url(#gRed)" stroke="#7a1020" stroke-width=".9" stroke-linejoin="round"/><ellipse cx="8" cy="8.2" rx="2" ry="1.1" fill="#fff" opacity=".6" transform="rotate(-35 8 8.2)"/></svg>',
+ heartOff:'<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.2 3 4.5 6.6 4.5c2 0 3.6 1.1 5.4 3.2 1.8-2.1 3.4-3.2 5.4-3.2 3.6 0 5.7 3.7 4.2 7.3C19.5 16.4 12 21 12 21z" fill="#ffffff22" stroke="#ffffff66" stroke-width="1" stroke-linejoin="round"/></svg>',
+ trophy:'<svg viewBox="0 0 24 24"><path d="M7 3h10v6a5 5 0 0 1-10 0z" fill="url(#gGold)" stroke="#b86b00" stroke-width=".8"/><path d="M7 5H4v2.2A3 3 0 0 0 7 10M17 5h3v2.2A3 3 0 0 1 17 10" fill="none" stroke="#ffb02e" stroke-width="1.6" stroke-linecap="round"/><rect x="10.6" y="13.6" width="2.8" height="4" fill="#ffb02e"/><rect x="7.5" y="17.4" width="9" height="3.4" rx="1.2" fill="url(#gGold)" stroke="#b86b00" stroke-width=".8"/><path d="M12 5.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z" fill="#fff" opacity=".85"/></svg>',
+ book:'<svg viewBox="0 0 24 24"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z" fill="url(#gBlue)" stroke="#0f4a99" stroke-width=".9" stroke-linejoin="round"/><path d="M8 8h8M8 11.5h8M8 15h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
+ spk:'<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>',
+ note:'<svg viewBox="0 0 24 24"><path d="M9 18V5.5l11-2V16" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="3" fill="#fff"/><circle cx="17.5" cy="16" r="3" fill="#fff"/></svg>',
+ voice:'<svg viewBox="0 0 24 24"><path d="M4 4h16v11H11l-5 4v-4H4z" fill="#fff"/><circle cx="8.5" cy="9.5" r="1.3" fill="#2a1a86"/><circle cx="12" cy="9.5" r="1.3" fill="#2a1a86"/><circle cx="15.5" cy="9.5" r="1.3" fill="#2a1a86"/></svg>',
+ full:'<svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ pause:'<svg viewBox="0 0 24 24"><rect x="5" y="4" width="5" height="16" rx="1.8" fill="#fff"/><rect x="14" y="4" width="5" height="16" rx="1.8" fill="#fff"/></svg>',
+ hand:'<svg viewBox="0 0 24 24"><g fill="#ffe0b8" stroke="#c98a4b" stroke-width=".7"><rect x="6" y="10" width="11" height="10" rx="4.5"/><rect x="6" y="3.2" width="2.6" height="9" rx="1.3"/><rect x="9.3" y="2" width="2.6" height="10" rx="1.3"/><rect x="12.6" y="3.2" width="2.6" height="9" rx="1.3"/><rect x="15.9" y="5.2" width="2.4" height="8" rx="1.2"/></g></svg>',
+ chev:'<svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ jump:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="url(#gBlue)" opacity=".35"/><path d="M32 24 L30 40 M30 40 L22 54 M30 40 L40 52 M31 28 L19 34 M31 28 L43 22" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="33" cy="16" r="7" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5"/><path d="M5 30l11-9v18z" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.2" stroke-linejoin="round"/><path d="M59 30l-11-9v18z" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+ shape:'<svg viewBox="0 0 64 64"><rect x="4" y="8" width="56" height="50" rx="5" fill="url(#gRed)"/><path d="M4 22h56M4 36h56M4 50h56M20 8v14M40 8v14M12 22v14M30 22v14M50 22v14M20 36v14M40 36v14M12 50v8M30 50v8M50 50v8" stroke="#7a1f14" stroke-width="2" opacity=".6"/><g fill="#1b1260"><circle cx="32" cy="20" r="6"/><path d="M24 29h16l3 14h-5l-1 12h-10l-1-12h-5z"/></g><rect x="4" y="8" width="56" height="50" rx="5" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"/></svg>',
+ obst:'<svg viewBox="0 0 64 64"><ellipse cx="32" cy="57" rx="27" ry="5" fill="#0004"/><path d="M32 6l15 42H17z" fill="url(#gOrange)" stroke="#8a3d00" stroke-width="2" stroke-linejoin="round"/><path d="M26 26h12l2.5 8h-17z" fill="#fff"/><rect x="10" y="46" width="44" height="9" rx="3" fill="url(#gGold)" stroke="#a35a00" stroke-width="2"/><path d="M6 18h10M48 18h10M4 28h9M51 28h9" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".8"/></svg>',
+ dance:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="url(#gPurple)" opacity=".4"/><circle cx="30" cy="15" r="7" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5"/><path d="M30 23 L32 39 M32 39 L24 55 M32 39 L44 51 M31 27 L18 19 M31 27 L44 33" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M52 7v15" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/><circle cx="49" cy="23" r="4.2" fill="#ffd23f"/><path d="M52 7l7 3" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/></svg>',
+ pose:'<svg viewBox="0 0 64 64"><circle cx="32" cy="34" r="27" fill="url(#gGreen)" opacity=".4"/><circle cx="32" cy="20" r="7" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5"/><path d="M32 28V44M32 44L24 58M32 44L40 58M32 31L18 19M32 31L46 19" stroke="#fff" stroke-width="5.5" stroke-linecap="round" fill="none"/><path d="M32 2l2.3 4.7 5.2.7-3.8 3.7.9 5.2L32 13.8l-4.6 2.5.9-5.2-3.8-3.7 5.2-.7z" fill="url(#gGold)" stroke="#b86b00" stroke-width="1" stroke-linejoin="round"/></svg>',
+ bal:'<svg viewBox="0 0 64 64"><circle cx="32" cy="30" r="28" fill="url(#gBlue)" opacity=".35"/><path d="M26 59l6-14 6 14z" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5" stroke-linejoin="round"/><rect x="5" y="42" width="54" height="5" rx="2.5" fill="#fff" transform="rotate(-6 32 44)"/><circle cx="32" cy="13" r="7" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5"/><path d="M32 21V34M32 34L28 41M32 34L37 40M32 25L15 21M32 25L49 21" stroke="#fff" stroke-width="5.5" stroke-linecap="round" fill="none"/></svg>',
+ dodge:'<svg viewBox="0 0 64 64"><path d="M4 14h15M1 24h15M7 34h11" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="26" r="18" fill="url(#gRed)" stroke="#7a1020" stroke-width="2"/><path d="M40 13l6.5 5-2.4 7.5h-8.2l-2.4-7.5z" fill="#7a1f14" opacity=".55"/><ellipse cx="33" cy="16" rx="6" ry="3.2" fill="#fff" opacity=".55" transform="rotate(-30 33 16)"/><circle cx="14" cy="47" r="5.5" fill="url(#gGold)" stroke="#b86b00" stroke-width="1.5"/><path d="M14 53L9 62M14 53L21 60M12 50L5 55" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/></svg>'};
+ICON.starS=ICON.star.replace("<svg",'<svg class="ic-s"');
+ICON.starOff=ICON.star.replace("url(#gGold)","#ffffff33").replace("#b86b00","#ffffff66");
+ICON.starSoff=ICON.starOff.replace("<svg",'<svg class="ic-s"');
+document.querySelectorAll("[data-ico]").forEach(e=>e.insertAdjacentHTML("afterbegin",ICON[e.dataset.ico]));
+const hearts=n=>[0,1,2].map(i=>i<n?ICON.heart:ICON.heartOff).join("");
+const lvS=l=>{const n={Mudah:1,Sedang:2,Sulit:3}[l]||1;return [0,1,2].map(i=>i<n?ICON.starS:ICON.starSoff).join("")};
+function mascot(ex){const P=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?46:90;P.push((100+r*Math.cos(a)).toFixed(1)+","+(106+r*Math.sin(a)).toFixed(1))}
+ const P2=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?26:58;P2.push((96+r*Math.cos(a)).toFixed(1)+","+(98+r*Math.sin(a)).toFixed(1))}
+ const sad=ex==="sad",wow=ex==="wow",cheer=ex==="cheer";
+ const arms=sad?'<path d="M52 104Q32 122 30 142M148 104Q168 122 170 142"/>':cheer?'<path d="M52 92Q24 76 18 44M148 92Q176 76 182 44"/>':'<path d="M52 100Q30 108 24 128M148 100Q170 108 176 128"/>';
+ const mouth=sad?'<path d="M84 146Q100 130 116 146" fill="none" stroke="#7a1f14" stroke-width="5" stroke-linecap="round"/>':wow?'<ellipse cx="100" cy="140" rx="9" ry="12" fill="#7a1f14"/>':'<path d="M78 128Q100 156 122 128z" fill="#7a1f14" stroke="#7a1f14" stroke-width="4" stroke-linejoin="round"/><path d="M88 142Q100 150 112 142Q100 136 88 142z" fill="#ff7a9a"/>';
+ const brows=sad?'<path d="M60 84l22 8M140 84l-22 8" stroke="#1b1260" stroke-width="4" stroke-linecap="round"/>':"";
+ const tear=sad?'<path d="M62 134q-6 10 0 14q6-4 0-14z" fill="#7fd4ff"/>':"";
+ return `<svg viewBox="0 0 200 214" class="mascot"><ellipse cx="100" cy="204" rx="52" ry="7" fill="#0004"/><g stroke="#3a7bd5" stroke-width="13" stroke-linecap="round" fill="none">${arms}<path d="M80 180v14M120 180v14"/></g><g fill="#2a55b0"><ellipse cx="76" cy="199" rx="15" ry="8"/><ellipse cx="124" cy="199" rx="15" ry="8"/></g><polygon points="${P.join(" ")}" fill="url(#gGold)" stroke="#ffc233" stroke-width="16" stroke-linejoin="round"/><polygon points="${P2.join(" ")}" fill="#fff" opacity=".24"/><circle cx="78" cy="110" r="21" fill="#fff" stroke="#1b1260" stroke-width="4"/><circle cx="122" cy="110" r="21" fill="#fff" stroke="#1b1260" stroke-width="4"/><path d="M99 108h2" stroke="#1b1260" stroke-width="4"/><circle cx="${sad?78:81}" cy="${sad?116:112}" r="9" fill="#1b1260"/><circle cx="${sad?122:119}" cy="${sad?116:112}" r="9" fill="#1b1260"/><circle cx="84" cy="107" r="3" fill="#fff"/><circle cx="125" cy="107" r="3" fill="#fff"/>${brows}<ellipse cx="56" cy="134" rx="10" ry="6" fill="#ff7a9a" opacity=".55"/><ellipse cx="144" cy="134" rx="10" ry="6" fill="#ff7a9a" opacity=".55"/>${mouth}${tear}<path d="M100 168l-16-9v18zM100 168l16-9v18z" fill="#e0383a" stroke="#8a1a22" stroke-width="2" stroke-linejoin="round"/><circle cx="100" cy="168" r="5" fill="#ff6b6b" stroke="#8a1a22" stroke-width="2"/></svg>`}
+function fbm(ex){$("#fb").insertAdjacentHTML("afterbegin",`<div class="mc">${mascot(ex)}</div>`)}
+
 const GAMES=[
- {id:"jump",ic:"🏃",n:"Jump to Answer",d:"Pilih jawaban dengan bergeser ke kiri atau kanan.",c:"#1f6fe0",m:"Serentak",lv:"Mudah",ready:1},
- {id:"shape",ic:"🧱",n:"Human Shape Challenge",d:"Tirukan siluet dinding dalam 5 detik.",c:"#d1297a",m:"Bergiliran",lv:"Sedang"},
- {id:"obst",ic:"🚧",n:"Obstacle Escape",d:"Hindari rintangan: geser, jongkok, angkat tangan.",c:"#e0701f",m:"Serentak",lv:"Sedang"},
- {id:"dance",ic:"💃",n:"Body Dance Battle",d:"Ikuti gerakan yang tampil di layar.",c:"#8a3ee0",m:"Bergiliran",lv:"Sedang"},
- {id:"pose",ic:"🧍",n:"Follow the Pose",d:"Tirukan pose target sebelum waktu habis.",c:"#12a37a",m:"Bergiliran",lv:"Mudah"},
- {id:"bal",ic:"⚖️",n:"Balance Challenge",d:"Tahan pose tertentu beberapa detik.",c:"#2a7fb8",m:"Bergiliran",lv:"Sulit"},
- {id:"dodge",ic:"☄️",n:"Dodge the Ball",d:"Hindari bola virtual dengan gerakan tubuh.",c:"#c0392b",m:"Serentak",lv:"Sulit"}];
-const BANK=[["7 + 5 = ?","12","11"],["Ibu kota Indonesia?","Jakarta","Bandung"],["Hewan yang bertelur?","Ayam","Kucing"],["9 x 3 = ?","27","24"],["Planet tempat kita tinggal?","Bumi","Mars"]];
+ {id:"jump",ic:ICON.jump,n:"Jump to Answer",d:"Pilih jawaban dengan bergeser ke kiri atau kanan.",c:"#1f6fe0",m:"Serentak",lv:"Mudah",ready:1},
+ {id:"shape",ic:ICON.shape,n:"Human Shape Challenge",d:"Tirukan siluet dinding dalam 5 detik.",c:"#d1297a",m:"Bergiliran",lv:"Sedang"},
+ {id:"obst",ic:ICON.obst,n:"Obstacle Escape",d:"Hindari rintangan: geser, jongkok, angkat tangan.",c:"#e0701f",m:"Serentak",lv:"Sedang"},
+ {id:"dance",ic:ICON.dance,n:"Body Dance Battle",d:"Ikuti gerakan yang tampil di layar.",c:"#8a3ee0",m:"Bergiliran",lv:"Sedang"},
+ {id:"pose",ic:ICON.pose,n:"Follow the Pose",d:"Tirukan pose target sebelum waktu habis.",c:"#12a37a",m:"Bergiliran",lv:"Mudah"},
+ {id:"bal",ic:ICON.bal,n:"Balance Challenge",d:"Tahan pose tertentu beberapa detik.",c:"#2a7fb8",m:"Bergiliran",lv:"Sulit"},
+ {id:"dodge",ic:ICON.dodge,n:"Dodge the Ball",d:"Hindari bola virtual dengan gerakan tubuh.",c:"#c0392b",m:"Serentak",lv:"Sulit"}];
+const QS=[[
+"3 + 4 = ?|7|6;10 - 6 = ?|4|5;5 + 5 = ?|10|9;9 - 3 = ?|6|7;2 + 8 = ?|10|12;Bilangan sesudah 19?|20|18;Bilangan sebelum 50?|49|51;4 + 6 - 3 = ?|7|8;6 + 3 = ?|9|8;8 - 5 = ?|3|4",
+"6 x 4 = ?|24|18;45 : 5 = ?|9|8;8 x 7 = ?|56|54;100 - 38 = ?|62|72;Sisi segitiga ada berapa?|3|4;Setengah dari 36?|18|16;125 + 75 = ?|200|190;12 x 5 = ?|60|50;9 x 6 = ?|54|56;81 : 9 = ?|9|8",
+"3/4 + 1/4 = ?|1|4/8;Luas persegi sisi 6 cm?|36 cm²|24 cm²;15% dari 200?|30|15;FPB 12 dan 18?|6|3;KPK 4 dan 6?|12|24;2 pangkat 3 = ?|8|6;0,5 x 8 = ?|4|40;Keliling persegi sisi 7 cm?|28 cm|49 cm;Volume kubus sisi 3 cm?|27 cm³|9 cm³;1/2 + 1/4 = ?|3/4|2/6"],[
+"Huruf pertama kata meja?|M|N;Lawan kata besar?|Kecil|Tinggi;Kata buku punya berapa suku kata?|2|3;Nama hewan yang benar?|Kucing|Kursi;Awal kalimat memakai huruf?|Kapital|Kecil;Akhir kalimat tanya diberi tanda?|Tanda tanya|Tanda seru;Lawan kata panas?|Dingin|Hangat;Persamaan kata cantik?|Indah|Jelek;Lawan kata naik?|Turun|Datang;Kata kucing diawali huruf?|K|C",
+"Sinonim pintar?|Pandai|Malas;Antonim rajin?|Malas|Giat;Kata sekolah termasuk kata?|Benda|Kerja;Kata berlari termasuk kata?|Kerja|Sifat;Kata indah termasuk kata?|Sifat|Benda;Kalimat yang ditulis benar?|Ibu pergi ke pasar.|ibu pergi ke pasar;Ejaan baku?|Apotek|Apotik;Antonim tinggi?|Rendah|Panjang;Antonim kaya?|Miskin|Senang;Sinonim cepat?|Lekas|Lambat",
+"Ejaan baku?|Analisis|Analisa;Ejaan baku?|Risiko|Resiko;Ejaan baku?|Nasihat|Nasehat;Perbandingan memakai kata seperti disebut?|Perumpamaan|Hiperbola;Gagasan utama paragraf disebut?|Ide pokok|Judul;me- + tulis menjadi?|Menulis|Mentulis;Ejaan baku?|Kualitas|Kwalitas;Lawan kata maju?|Mundur|Tinggi;Ejaan baku?|Aktif|Aktip;ber- + main menjadi?|Bermain|Bemain"],[
+"Matahari terbit dari arah?|Timur|Barat;Hewan yang menyusui anaknya?|Kucing|Ayam;Alat indra untuk melihat?|Mata|Telinga;Tumbuhan butuh apa untuk hidup?|Air|Batu;Jumlah hari dalam seminggu?|7|5;Es batu dipanaskan menjadi?|Air|Kayu;Alat indra untuk mencium?|Hidung|Tangan;Hewan yang hidup di air?|Ikan|Kambing;Jumlah kaki kucing?|4|2;Warna daun umumnya?|Hijau|Biru",
+"Planet tempat kita tinggal?|Bumi|Mars;Tumbuhan membuat makanan lewat?|Fotosintesis|Respirasi;Hewan pemakan tumbuhan?|Herbivora|Karnivora;Sumber energi terbesar di bumi?|Matahari|Bulan;Air membeku pada suhu?|0°C|100°C;Wujud benda yang mengalir?|Cair|Padat;Organ pernapasan manusia?|Paru-paru|Lambung;Siang dan malam terjadi karena bumi?|Berotasi|Berevolusi;Planet yang punya cincin?|Saturnus|Mars;Hewan yang bertelur?|Burung|Sapi",
+"Planet terbesar di tata surya?|Jupiter|Bumi;Gas yang kita hirup untuk bernapas?|Oksigen|Karbon dioksida;Presiden pertama RI?|Ir. Soekarno|Soeharto;Hari Kemerdekaan RI?|17 Agustus|1 Juni;Sumber daya yang tidak dapat diperbarui?|Minyak bumi|Air;Rantai makanan dimulai dari?|Produsen|Konsumen;Cair menjadi gas disebut?|Menguap|Membeku;Organ pemompa darah?|Jantung|Ginjal;Planet terdekat dengan Matahari?|Merkurius|Venus;Gaya yang menarik benda ke bumi?|Gravitasi|Magnet"]];
+const QX=[[
+"7 + 2 = ?|9|8;12 - 4 = ?|8|9;6 + 6 = ?|12|10;15 - 5 = ?|10|5;Bilangan sesudah 29?|30|28;Bilangan sebelum 100?|99|101;3 + 3 + 3 = ?|9|6;20 - 10 = ?|10|20;Berapa sisi persegi?|4|3;Setengah dari 10?|5|2;8 + 7 = ?|15|14;14 - 6 = ?|8|9;Bilangan genap setelah 6?|8|7;2 + 2 + 2 + 2 = ?|8|6;Lebih besar mana?|57|48",
+"7 x 6 = ?|42|36;72 : 8 = ?|9|8;250 + 150 = ?|400|300;500 - 275 = ?|225|235;9 x 9 = ?|81|72;Keliling persegi sisi 5 cm?|20 cm|25 cm;Luas persegi panjang 6 cm kali 4 cm?|24 cm²|20 cm²;1 jam berapa menit?|60|100;1 kg berapa gram?|1000|100;Bilangan ganjil setelah 15?|17|16;Setengah dari 90?|45|40;36 : 6 = ?|6|7;15 x 4 = ?|60|45;Sudut siku-siku berapa derajat?|90|180;Segi enam punya berapa sisi?|6|5",
+"2/3 + 1/3 = ?|1|3/6;Luas segitiga alas 10 cm tinggi 6 cm?|30 cm²|60 cm²;25% dari 80?|20|25;Akar kuadrat 81?|9|8;5 pangkat 2 = ?|25|10;KPK 6 dan 8?|24|48;FPB 24 dan 36?|12|6;0,25 sama dengan pecahan?|1/4|1/5;Keliling lingkaran diameter 10 cm, pi 3,14?|31,4 cm|62,8 cm;Luas lingkaran jari-jari 7 cm, pi 22/7?|154 cm²|44 cm²;Kecepatan 60 km dalam 2 jam?|30 km/jam|120 km/jam;Volume balok 5 x 4 x 3 cm?|60 cm³|12 cm³;Hasil -3 + 8?|5|-5;1,5 + 2,5 = ?|4|3;Rata-rata dari 4, 6, dan 8?|6|8"],[
+"Huruf awal kata ibu?|I|U;Lawan kata tinggi?|Pendek|Besar;Kata sapu ada berapa huruf?|4|5;Hewan yang pandai terbang?|Burung|Ikan;Kata yang benar?|Sekolah|Sekola;Sinonim senang?|Gembira|Sedih;Lawan kata gelap?|Terang|Hitam;Tanda baca akhir kalimat berita?|Titik|Koma;Hari setelah Senin?|Selasa|Rabu;Kata ayam diawali huruf?|A|Y;Alat untuk menulis?|Pensil|Piring;Lawan kata datang?|Pergi|Tiba;Mana nama buah?|Apel|Meja;Mana nama warna?|Merah|Mobil;Mana nama kendaraan?|Bus|Buku",
+"Sinonim indah?|Cantik|Buruk;Antonim gemuk?|Kurus|Besar;Kata ulang dari buku?|Buku-buku|Bukubuku;Penulisan yang benar?|di rumah|dirumah;Sinonim murung?|Sedih|Gembira;me- + sapu menjadi?|Menyapu|Mensapu;Mana kalimat tanya?|Siapa namamu?|Aku makan.;Tanda koma dipakai untuk?|Memisahkan rincian|Mengakhiri kalimat;Nama orang diawali huruf?|Kapital|Kecil;Antonim mahal?|Murah|Mewah;Sinonim sungai?|Kali|Laut;Mana kata sifat?|Cantik|Berlari;Mana kata kerja?|Menulis|Merah;Mana kata benda?|Meja|Lari;Kalimat seru diakhiri tanda?|Seru|Tanya",
+"Ejaan baku?|Silakan|Silahkan;Ejaan baku?|Izin|Ijin;Ejaan baku?|Teknik|Tehnik;Ejaan baku?|Objek|Obyek;Ejaan baku?|Hakikat|Hakekat;Ejaan baku?|Sistem|Sistim;Ejaan baku?|Subjek|Subyek;Majas yang melebih-lebihkan?|Hiperbola|Metafora;pe- + tani menjadi?|Petani|Pentani;Makna kata pelit?|Kikir|Boros;Antonim hemat?|Boros|Rajin;Kalimat utama berisi?|Gagasan utama|Rincian contoh;Bahasa resmi Indonesia?|Bahasa Indonesia|Bahasa Jawa;Sinonim bagus?|Baik|Buruk;Baris pada puisi disebut?|Larik|Paragraf"],[
+"Alat indra untuk mendengar?|Telinga|Mata;Alat indra pengecap?|Lidah|Hidung;Jumlah jari satu tangan?|5|10;Hewan yang hidup di darat?|Sapi|Hiu;Tumbuhan menyerap air lewat?|Akar|Daun;Benda yang dapat terbang?|Burung|Batu;Sumber cahaya di siang hari?|Matahari|Bulan;Musim yang banyak hujan?|Musim hujan|Musim kemarau;Makanan yang sehat?|Sayur|Permen;Hewan yang punya belalai?|Gajah|Kuda;Buah berwarna kuning?|Pisang|Semangka;Air hujan berasal dari?|Awan|Tanah;Hewan yang berkokok?|Ayam jantan|Bebek;Kucing berjalan dengan?|Empat kaki|Dua kaki;Kita menggosok gigi agar?|Gigi bersih|Gigi kotor",
+"Bagian tumbuhan penyerap air?|Akar|Daun;Tempat fotosintesis pada tumbuhan?|Daun|Akar;Hewan pemakan daging?|Karnivora|Herbivora;Hewan pemakan tumbuhan dan daging?|Omnivora|Herbivora;Padat berubah menjadi cair disebut?|Mencair|Membeku;Benda yang ditarik magnet?|Besi|Plastik;Planet ketiga dari Matahari?|Bumi|Venus;Alat melihat benda jauh?|Teleskop|Mikroskop;Ikan bernapas dengan?|Insang|Paru-paru;Bulan mengelilingi?|Bumi|Matahari;Sumber bunyi adalah benda yang?|Bergetar|Diam;Gaya gesek terjadi pada permukaan yang?|Bersentuhan|Berjauhan;Energi dari makanan disebut energi?|Kimia|Listrik;Benda bening dapat?|Ditembus cahaya|Menahan cahaya;Alat gerak manusia?|Tulang dan otot|Jantung dan paru-paru",
+"Ulat menjadi kupu-kupu disebut?|Metamorfosis|Fotosintesis;Penyerap sari makanan?|Usus halus|Usus besar;Pembuluh darah dari jantung?|Arteri|Vena;Lapisan bumi paling luar?|Kerak bumi|Inti bumi;Pelindung bumi dari sinar UV?|Lapisan ozon|Awan;Indonesia terletak di antara benua?|Asia dan Australia|Eropa dan Afrika;Panas berpindah tanpa zat perantara?|Radiasi|Konduksi;Sumber energi terbarukan?|Matahari|Batu bara;Zat hijau daun?|Klorofil|Hemoglobin;Pemanasan global karena gas?|Rumah kaca|Oksigen;Ayam termasuk hewan?|Omnivora|Karnivora;Alat ukur gaya?|Dinamometer|Termometer;Bulan menutupi Matahari disebut?|Gerhana matahari|Gerhana bulan;Satuan gaya?|Newton|Joule;Planet berwarna merah?|Mars|Jupiter"]];
+const QY=[[
+"5 + 4 = ?|9|10;11 - 3 = ?|8|7;9 + 9 = ?|18|16;17 - 7 = ?|10|11;Bilangan sesudah 59?|60|58;Bilangan sebelum 80?|79|81;4 + 4 + 4 = ?|12|8;Berapa sudut persegi?|4|2;13 + 5 = ?|18|17;16 - 8 = ?|8|7",
+"8 x 6 = ?|48|42;63 : 7 = ?|9|8;300 + 450 = ?|750|650;1000 - 250 = ?|750|850;11 x 5 = ?|55|50;Keliling persegi panjang 8 cm dan 3 cm?|22 cm|24 cm;1 meter berapa cm?|100|10;1 liter berapa ml?|1000|100;Setengah jam berapa menit?|30|15;4 x 25 = ?|100|90",
+"3/5 + 1/5 = ?|4/5|4/10;12% dari 50?|6|12;7 pangkat 2 = ?|49|14;Akar kuadrat 144?|12|14;KPK 5 dan 10?|10|50;FPB 15 dan 25?|5|25;0,75 sama dengan pecahan?|3/4|2/3;Luas trapesium sisi sejajar 6 cm dan 10 cm tinggi 4 cm?|32 cm²|64 cm²;Jarak 90 km ditempuh 3 jam, kecepatannya?|30 km/jam|270 km/jam;2,5 x 4 = ?|10|8"],[
+"Huruf awal kata topi?|T|P;Lawan kata atas?|Bawah|Samping;Kata bola ada berapa huruf?|4|5;Hewan yang hidup di air?|Ikan|Kucing;Lawan kata kotor?|Bersih|Basah;Hari setelah Rabu?|Kamis|Jumat;Kata meja termasuk?|Benda|Warna;Mana nama hewan?|Kuda|Kursi;Alat untuk memotong kertas?|Gunting|Sendok;Awal nama orang memakai huruf?|Kapital|Kecil",
+"Antonim panjang?|Pendek|Lebar;Sinonim rumah?|Tempat tinggal|Tempat parkir;me- + baca menjadi?|Membaca|Mebaca;Kata ulang dari mobil?|Mobil-mobil|Mobilmobil;Antonim berani?|Takut|Kuat;Sinonim gembira?|Senang|Marah;Mana kata penghubung?|Dan|Meja;Kata tanya untuk orang?|Siapa|Kapan;Kata tanya untuk tempat?|Di mana|Kapan;Mana kalimat perintah?|Tolong ambilkan buku.|Dia sedang makan.",
+"Ejaan baku?|Kuitansi|Kwitansi;Ejaan baku?|Praktik|Praktek;Ejaan baku?|Antre|Antri;Ejaan baku?|Atlet|Atlit;Ejaan baku?|Cendekiawan|Cendikiawan;Majas tanpa kata seperti disebut?|Metafora|Simile;Air tenang menghanyutkan berarti?|Orang pendiam bisa berbahaya|Orang pendiam pasti penakut;Berat sama dipikul ringan sama dijinjing berarti?|Bergotong royong|Bermalas-malasan;Sinonim cerdas?|Pintar|Bodoh;Surat resmi diawali dengan?|Kop surat|Gambar kartun"],[
+"Alat indra peraba?|Kulit|Mata;Bagian tubuh untuk berjalan?|Kaki|Tangan;Hewan yang hidup di air dan darat?|Katak|Sapi;Mana benda cair?|Air|Batu;Mana benda padat?|Batu|Air;Tumbuhan butuh cahaya dari?|Matahari|Bulan;Malam hari terlihat?|Bulan|Pelangi;Hewan yang bertelur dan bisa terbang?|Burung|Kucing;Mandi berguna agar badan?|Bersih|Kotor;Pelangi muncul setelah?|Hujan|Malam",
+"Planet terdekat Matahari?|Merkurius|Bumi;Tengkorak melindungi?|Otak|Jantung;Hewan yang melahirkan anak?|Sapi|Burung;Cair menjadi padat disebut?|Membeku|Menguap;Alat mengukur suhu?|Termometer|Penggaris;Matahari adalah sebuah?|Bintang|Planet;Mana benda tidak bening?|Kayu|Kaca;Sumber energi listrik?|Baterai|Karet;Tumbuhan baru dapat tumbuh dari?|Biji|Batu;Organ yang memompa darah?|Jantung|Paru-paru",
+"Fotosintesis menghasilkan gas?|Oksigen|Karbon dioksida;Fotosintesis memerlukan?|Cahaya matahari|Garam;Zat gizi pembangun tubuh?|Protein|Lemak;Sumber energi utama tubuh?|Karbohidrat|Mineral;Planet paling jauh dari Matahari?|Neptunus|Merkurius;Bumi mengelilingi Matahari disebut?|Revolusi|Rotasi;Energi gerak disebut energi?|Kinetik|Potensial;Pencemaran udara disebabkan?|Asap kendaraan|Air hujan;Sel darah merah mengangkut?|Oksigen|Makanan;Hewan langka dari Kalimantan?|Orangutan|Komodo"]];
+const QZ=[[
+"6 + 5 = ?|11|10;13 - 7 = ?|6|7;4 + 9 = ?|13|12;18 - 9 = ?|9|8;10 + 10 = ?|20|15;Bilangan sesudah 39?|40|38;Bilangan sebelum 70?|69|71;5 + 5 + 5 = ?|15|10;30 - 10 = ?|20|10;Berapa kaki seekor ayam?|2|4;Setengah dari 8?|4|2;9 - 2 = ?|7|6;19 + 1 = ?|20|19;25 - 5 = ?|20|30;Angka paling besar satu digit?|9|10;Mana bilangan genap?|8|7;Mana bilangan ganjil?|9|10;2 + 3 + 4 = ?|9|8;12 + 6 = ?|18|16;17 - 9 = ?|8|9;Segitiga punya berapa sisi?|3|4;Jari dua tangan ada berapa?|10|5;40 + 20 = ?|60|50;50 - 30 = ?|20|30;Hari dalam seminggu ada?|7|6",
+"6 x 7 = ?|42|48;54 : 6 = ?|9|8;125 + 250 = ?|375|365;800 - 350 = ?|450|550;13 x 3 = ?|39|36;48 : 4 = ?|12|14;Keliling segitiga sisi 5, 6, dan 7 cm?|18 cm|21 cm;Luas persegi sisi 8 cm?|64 cm²|32 cm²;1 hari berapa jam?|24|12;1 minggu berapa hari?|7|5;2 kg berapa gram?|2000|200;3 meter berapa cm?|300|30;Seperempat dari 20?|5|4;9 x 4 = ?|36|32;100 : 4 = ?|25|20;0 x 99 = ?|0|99;6 x 6 = ?|36|42;7 x 7 = ?|49|42;90 - 47 = ?|43|53;58 + 27 = ?|85|75;Segi empat punya berapa sudut?|4|3;Pukul 3 sore sama dengan pukul?|15.00|13.00;1 tahun berapa bulan?|12|10;8 x 8 = ?|64|56;200 : 5 = ?|40|50",
+"4/7 + 2/7 = ?|6/7|6/14;3/4 - 1/4 = ?|1/2|1/4;1/2 x 1/3 = ?|1/6|2/5;10% dari 350?|35|3,5;50% dari 90?|45|50;9 pangkat 2 = ?|81|18;10 pangkat 3 = ?|1000|30;Akar kuadrat 49?|7|9;Akar kuadrat 225?|15|25;KPK 9 dan 12?|36|108;FPB 18 dan 24?|6|12;0,2 sama dengan pecahan?|1/5|1/2;3/10 sama dengan desimal?|0,3|0,03;Keliling lingkaran jari-jari 7 cm, pi 22/7?|44 cm|22 cm;Luas lingkaran jari-jari 10 cm, pi 3,14?|314 cm²|62,8 cm²;Volume kubus sisi 4 cm?|64 cm³|16 cm³;Volume balok 10 x 5 x 2 cm?|100 cm³|50 cm³;Luas jajar genjang alas 8 cm tinggi 5 cm?|40 cm²|13 cm²;Luas layang-layang diagonal 10 dan 6 cm?|30 cm²|60 cm²;Rata-rata dari 10, 20, dan 30?|20|30;Median dari 3, 5, 9?|5|9;Modus dari 2, 3, 3, 4?|3|2;Hasil -5 + 2?|-3|3;Hasil 4 - 9?|-5|5;Kecepatan 80 km dalam 4 jam?|20 km/jam|320 km/jam"],[
+"Huruf awal kata rumah?|R|N;Huruf awal kata gajah?|G|J;Lawan kata baik?|Buruk|Bagus;Lawan kata siang?|Malam|Pagi;Lawan kata kanan?|Kiri|Atas;Persamaan kata pandai?|Pintar|Malas;Hewan berkaki empat?|Kambing|Ayam;Hewan berkaki dua?|Ayam|Sapi;Kata buku diawali huruf?|B|D;Kata ibu ada berapa huruf?|3|4;Kata nasi termasuk?|Makanan|Hewan;Hari sebelum Selasa?|Senin|Rabu;Hari setelah Kamis?|Jumat|Sabtu;Mana nama sayur?|Wortel|Pisang;Mana nama alat tulis?|Pensil|Sapu;Mana nama bagian tubuh?|Tangan|Meja;Mana huruf vokal?|A|B;Mana huruf vokal lain?|I|K;Kata topi ada berapa huruf?|4|3;Warna langit cerah?|Biru|Hitam;Warna pisang matang?|Kuning|Ungu;Suara kucing?|Meong|Guk;Suara anjing?|Guk|Meong;Kendaraan roda dua?|Sepeda|Bus;Kendaraan di air?|Perahu|Sepeda",
+"Antonim jauh?|Dekat|Panjang;Antonim ramai?|Sepi|Gaduh;Sinonim pandai?|Cerdas|Malas;Sinonim lekas?|Cepat|Lambat;Antonim keras?|Lunak|Kasar;Antonim buka?|Tutup|Masuk;Kata ulang dari kursi?|Kursi-kursi|Kursikursi;ber- + jalan menjadi?|Berjalan|Bejalan;Penulisan yang benar?|ke pasar|kepasar;Penulisan yang benar?|di sekolah|disekolah;Kalimat yang benar?|Adik bermain bola.|adik bermain bola;Tanda titik dipakai di akhir kalimat?|Berita|Tanya;Mana kata kerja?|Membaca|Hijau;Mana kata sifat?|Tinggi|Menulis;Mana kata benda?|Buku|Menari;Sinonim ayah?|Bapak|Ibu;Antonim siang?|Malam|Sore;Singkatan SD adalah?|Sekolah Dasar|Sekolah Dalam;Kata tanya untuk alasan?|Mengapa|Siapa;Kata tanya untuk jumlah?|Berapa|Kapan;Kalimat tanya diakhiri tanda?|Tanya|Titik;Cerita yang tokohnya hewan disebut?|Fabel|Puisi;Malin Kundang termasuk cerita?|Legenda|Fabel;Bagian awal cerita disebut?|Pengenalan|Penyelesaian;Judul ditulis dengan huruf awal?|Kapital|Kecil",
+"Ejaan baku?|Frasa|Frase;Ejaan baku?|Konkret|Kongkrit;Ejaan baku?|Standar|Standart;Ejaan baku?|Teknologi|Tehnologi;Ejaan baku?|Rezeki|Rejeki;Ejaan baku?|Syukur|Sukur;Ejaan baku?|Kaidah|Kaedah;Ejaan baku?|Hipotesis|Hipotesa;Ejaan baku?|Manajer|Manager;Ejaan baku?|Kategori|Katagori;Majas dengan kata seperti disebut?|Simile|Hiperbola;Majas memberi sifat manusia pada benda?|Personifikasi|Ironi;Majas sindiran halus?|Ironi|Metafora;Sedia payung sebelum hujan berarti?|Bersiap sebelum terjadi|Membeli payung baru;Rajin pangkal pandai berarti?|Rajin belajar membuat pintar|Pintar membuat malas;Tong kosong nyaring bunyinya berarti?|Orang bodoh banyak bicara|Orang pintar diam;Sinonim dermawan?|Murah hati|Pelit;Antonim kuno?|Modern|Lama;Antonim optimis?|Pesimis|Yakin;Teks berisi langkah-langkah disebut teks?|Prosedur|Narasi;Teks kejadian berurutan disebut teks?|Narasi|Deskripsi;Teks yang menggambarkan sesuatu?|Deskripsi|Prosedur;Kalimat efektif adalah kalimat yang?|Jelas dan singkat|Panjang dan berbelit;Kata penghubung pertentangan?|Tetapi|Dan;Tempat kejadian dalam cerita disebut?|Latar|Tokoh"],[
+"Benda yang menghasilkan cahaya?|Lampu|Batu;Hewan peliharaan?|Kucing|Harimau;Hewan buas?|Singa|Kelinci;Tumbuhan yang berbuah?|Mangga|Rumput;Buah berwarna merah?|Apel|Jeruk;Sayuran berwarna oranye?|Wortel|Bayam;Air yang boleh diminum?|Air bersih|Air kotor;Kita bernapas dengan?|Hidung|Telinga;Kita makan dengan?|Mulut|Telinga;Saat hujan kita membawa?|Payung|Kipas;Siang hari terang karena?|Matahari|Bulan;Malam hari kita tidur agar?|Badan segar|Badan lelah;Cuci tangan sebelum?|Makan|Tidur;Hewan yang hidup di hutan?|Harimau|Ikan koi;Hewan yang berenang?|Ikan|Kucing;Hewan yang merayap?|Ular|Burung;Es berasal dari air yang?|Membeku|Mendidih;Air mendidih terasa?|Panas|Dingin;Tumbuhan menghasilkan?|Oksigen|Plastik;Sampah dibuang ke?|Tempat sampah|Sungai;Benda yang tenggelam di air?|Batu|Gabus;Benda yang terapung di air?|Gabus|Batu;Gigi berguna untuk?|Mengunyah|Mendengar;Mata berguna untuk?|Melihat|Mencium;Tangan berguna untuk?|Memegang|Berlari",
+"Planet terbesar?|Jupiter|Bumi;Planet berwarna merah?|Mars|Venus;Satelit alami Bumi?|Bulan|Matahari;Gerak Bumi pada porosnya?|Rotasi|Revolusi;Hewan berkembang biak dengan bertelur?|Ayam|Sapi;Hewan yang mengalami metamorfosis?|Kupu-kupu|Kucing;Bagian bunga yang berwarna-warni?|Mahkota|Akar;Biji tumbuh menjadi?|Tunas|Batu;Benda penghantar listrik?|Tembaga|Karet;Benda isolator listrik?|Karet|Besi;Cahaya merambat?|Lurus|Melengkung;Bayangan terbentuk karena cahaya?|Terhalang benda|Menembus kaca;Bunyi merambat melalui?|Udara|Ruang hampa;Alat pernapasan serangga?|Trakea|Paru-paru;Organ yang menampung makanan?|Lambung|Jantung;Tulang rusuk melindungi?|Paru-paru dan jantung|Otak;Zat makanan pembangun tubuh?|Protein|Gula;Sumber vitamin C?|Jeruk|Nasi;Sumber karbohidrat?|Nasi|Sayur;Wujud benda yang bentuknya tetap?|Padat|Gas;Padat langsung menjadi gas disebut?|Menyublim|Membeku;Embun terbentuk dari uap air yang?|Mengembun|Membeku;Air menguap karena?|Panas|Dingin;Magnet punya berapa kutub?|2|3;Kutub magnet yang sama saling?|Tolak-menolak|Tarik-menarik",
+"Pertukaran gas terjadi di?|Alveolus|Lambung;Organ yang menyaring darah?|Ginjal|Lambung;Organ penghasil empedu?|Hati|Pankreas;Lapisan bumi yang kita tinggali?|Kerak bumi|Mantel;Gunung berapi mengeluarkan?|Lava|Salju;Gempa bumi diukur dengan?|Seismograf|Termometer;Tekanan udara diukur dengan?|Barometer|Seismograf;Lapisan atmosfer terdekat bumi?|Troposfer|Eksosfer;Sumber energi fosil?|Minyak bumi|Angin;Energi angin dipakai untuk?|Kincir angin|Kompor;Rumput, belalang, katak: produsennya?|Rumput|Katak;Konsumen tingkat satu memakan?|Tumbuhan|Daging;Contoh pengurai?|Jamur|Rumput;Hewan pengerat?|Tikus|Harimau;Alat untuk melihat benda kecil?|Mikroskop|Teleskop;Cermin cekung bersifat?|Mengumpulkan cahaya|Menyebarkan cahaya;Pelangi terjadi karena cahaya?|Terurai|Menghilang;Listrik jadi cahaya pada?|Lampu|Kipas;Listrik jadi gerak pada?|Kipas angin|Lampu;Gaya yang menahan gerak benda?|Gesek|Dorong;Contoh pengungkit?|Gunting|Sekrup;Contoh bidang miring?|Jalan menanjak|Gunting;Fotosintesis terjadi di?|Kloroplas|Mitokondria;Makhluk hidup berkembang biak agar?|Tidak punah|Cepat lapar;Kerja sama antarwarga disebut?|Gotong royong|Persaingan"]];
+let BANK=[],inPose=false,inAct=false;
+function mkBank(){const cs=CB.find(x=>x.id===$("#src").value);let a;if(cs)a=cs.items.map(x=>x.slice());else{const si=$("#sub").selectedIndex,li=$("#lvl").selectedIndex;a=(QS[si][li]+";"+QX[si][li]+";"+QY[si][li]+";"+QZ[si][li]).split(";").map(x=>x.split("|"))}for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,+$("#nq").value)}
+Object.assign(GAMES[1],{ready:1,pose:{t:5,h:600,n:5,wall:1}});Object.assign(GAMES[3],{ready:1,pose:{t:3,h:300,n:8}});Object.assign(GAMES[4],{ready:1,pose:{t:8,h:800,n:5}});Object.assign(GAMES[5],{ready:1,pose:{t:12,h:4000,n:3}});Object.assign(GAMES[2],{ready:1,act:{}});Object.assign(GAMES[6],{ready:1,act:{dodge:1}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const show=id=>{$$(".view").forEach(v=>v.classList.toggle("on",v.id===id))};
+const show=id=>{$$(".view").forEach(v=>v.classList.toggle("on",v.id===id));snd.mood=["play","pgame","agame"].includes(id)?"game":"menu";MU.n=0;sfx.swoosh();if(id==="bank"||id==="setup")renderBank()};
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)show(g.dataset.go)});
 let game=GAMES[0],mode="serentak";
-$("#cards").innerHTML=GAMES.map((g,i)=>`<button class="card" style="--c:${g.c}" data-i="${i}"><span class="ic" aria-hidden="true">${g.ic}</span><b>${g.n}</b><span>${g.d}</span><div class="tags"><span class="tag">${g.m}</span><span class="tag">${g.lv}</span>${g.ready?"":'<span class="tag soon">Segera</span>'}</div></button>`).join("");
+$("#cards").innerHTML=GAMES.map((g,i)=>`<button class="card" style="--c:${g.c}" data-i="${i}"><span class="ic" aria-hidden="true">${g.ic}</span><b>${g.n}</b><span>${g.d}</span><div class="tags"><span class="tag">${g.m}</span><span class="tag">${lvS(g.lv)} ${g.lv}</span>${g.ready?"":'<span class="tag soon">Segera</span>'}</div></button>`).join("");
 $("#cards").onclick=e=>{const c=e.target.closest(".card");if(!c)return;game=GAMES[c.dataset.i];$("#setupTitle").textContent="Persiapan: "+game.n;mode=game.m.toLowerCase();$$("#modeSeg .btn").forEach(b=>b.classList.toggle("sel",b.dataset.mode===mode));show("setup")};
 $("#modeSeg").onclick=e=>{const b=e.target.closest(".btn");if(!b)return;mode=b.dataset.mode;$$("#modeSeg .btn").forEach(x=>x.classList.toggle("sel",x===b))};
-let qi,score,right,t0,tm,paused,locked,total=10000,left;
-function countdown(msg,cb){const o=$("#over");$("#resume").hidden=true;$("#ovmsg").textContent=msg;o.classList.add("on");let n=3;$("#cnt").textContent=n;const iv=setInterval(()=>{n--;if(n>0)$("#cnt").textContent=n;else{clearInterval(iv);o.classList.remove("on");cb()}},800)}
-$("#startPlay").onclick=()=>{if(!game.ready){alert(game.n+" dibuat di tahap berikutnya. Coba Jump to Answer dulu.");return}show("play");qi=0;score=0;right=0;$("#sc").textContent=0;countdown("Bersiap!",nextQ)};
-let cur;
-function nextQ(){if(qi>=BANK.length)return finish();const q=BANK[qi],flip=Math.random()<.5;cur={ans:flip?"L":"R"};$("#qn").textContent=qi+1;$("#qtext").textContent=q[0];$("#aL").textContent=flip?q[1]:q[2];$("#aR").textContent=flip?q[2]:q[1];$$(".zone").forEach(z=>z.className="zone");locked=false;left=total;t0=performance.now();tick()}
-function tick(){cancelAnimationFrame(tm);const f=()=>{if(paused)return;const r=left-(performance.now()-t0);$("#tbar").style.transform=`scaleX(${Math.max(r,0)/total})`;if(r<=0)return pick(S.on?(S.L>S.R?"L":S.R>S.L?"R":null):null);tm=requestAnimationFrame(f)};tm=requestAnimationFrame(f)}
-function pick(side){if(locked)return;locked=true;cancelAnimationFrame(tm);const ok=side===cur.ans;if(ok){right++;score+=10+Math.round(Math.max(left-(performance.now()-t0),0)/total*3)}
- if(side)$("#z"+side).classList.add(ok?"ok":"no");$("#z"+cur.ans).classList.add("ok");$("#sc").textContent=score;qi++;setTimeout(nextQ,1400)}
+let qi,score,right,wrong,none,t0,tm,nt,ci,paused,locked=true,total=10000,left,cur,pi=0,players=[],session=[],tStart=0;
+const E=t=>String(t).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
+/* audio sintetis orisinal (tanpa file, bebas hak cipta): efek berlapis, musik 2 suasana, reverb, suara pemandu */
+const snd={on:true,mus:true,voice:true,vol:.7,x:null,m:null,mg:null,rv:null,mood:"menu",tT:0};let lt=0,combo=0;
+function A(){if(!snd.x){try{const x=snd.x=new(window.AudioContext||window.webkitAudioContext)(),cp=x.createDynamicsCompressor();cp.connect(x.destination);snd.m=x.createGain();snd.m.gain.value=snd.vol;snd.m.connect(cp);snd.mg=x.createGain();snd.mg.gain.value=.3;snd.mg.connect(snd.m);
+ try{const n=x.sampleRate*1.6|0,ib=x.createBuffer(2,n,x.sampleRate);for(let c=0;c<2;c++){const d=ib.getChannelData(c);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.5)}snd.rv=x.createConvolver();snd.rv.buffer=ib;const rg=x.createGain();rg.gain.value=.3;snd.rv.connect(rg);rg.connect(snd.m)}catch(e){snd.rv=null}}catch(e){}}
+ if(snd.x&&snd.x.state==="suspended")snd.x.resume();return snd.x}
+function tone(f,d,at,ty,v,f2,dst){const x=A();if(!x||(!dst&&!snd.on))return;const o=x.createOscillator(),g=x.createGain(),t=x.currentTime+at;o.type=ty||"sine";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.2,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(dst||snd.m);
+ if(snd.rv){const r=x.createGain();r.gain.value=dst?.12:.35;g.connect(r);r.connect(snd.rv)}o.start(t);o.stop(t+d+.05)}
+function nz(d,at,v,fq,dst,ty){const x=A();if(!x||(!dst&&!snd.on))return;const n=x.sampleRate*d|0,bf=x.createBuffer(1,n,x.sampleRate),a=bf.getChannelData(0);for(let k=0;k<n;k++)a[k]=(Math.random()*2-1)*(1-k/n);const sr=x.createBufferSource(),f=x.createBiquadFilter(),g=x.createGain();f.type=ty||"highpass";f.frequency.value=fq||1200;g.gain.value=v||.2;sr.buffer=bf;sr.connect(f);f.connect(g);g.connect(dst||snd.m);sr.start(x.currentTime+at)}
+const sfx={
+ ok:()=>{const k=Math.min(combo,7),m=f=>f*Math.pow(2,k/12);[523,659,784,1047].forEach((f,i)=>tone(m(f),.3,i*.07,"triangle",.22));tone(m(2093),.4,.3,"sine",.07);for(let i=0;i<5;i++)tone(1800+Math.random()*2400,.12,.05+i*.06,"sine",.04);nz(.2,0,.05,6000)},
+ no:()=>{tone(392,.35,0,"sawtooth",.1,196);tone(330,.4,.28,"sawtooth",.1,147)},
+ to:()=>{tone(330,.2,0,"square",.08);tone(262,.35,.22,"square",.08);nz(.3,0,.05,300,null,"lowpass")},
+ tick:()=>tone(880,.07,0,"square",.07),
+ go:()=>{[523,659,784].forEach(f=>tone(f,.5,0,"triangle",.2));tone(1047,.6,0,"sine",.12);nz(.4,0,.08,3000)},
+ click:()=>tone(700,.06,0,"sine",.08,1000),
+ swoosh:()=>{nz(.28,0,.07,900);tone(300,.25,0,"sine",.04,1200)},
+ whoosh:()=>{nz(.5,0,.14,500);tone(150,.55,0,"sine",.07,1000);tone(2000,.4,0,"sine",.02,300)},
+ hit:()=>{tone(180,.5,0,"sine",.4,40);tone(260,.3,0,"square",.1,60);nz(.3,0,.25,250,null,"lowpass");nz(.15,0,.15,2500)},
+ pop:()=>{tone(400,.18,0,"sine",.25,1200);nz(.12,0,.08,5000)},
+ star:i=>{const f=784*Math.pow(1.26,i);tone(f,.5,0,"triangle",.22);tone(f*2,.6,.05,"sine",.1);for(let j=0;j<4;j++)tone(2400+j*500,.15,j*.05,"sine",.04)},
+ win:()=>{[523,659,784,1047,784,1047,1319].forEach((f,i)=>{tone(f,.3,i*.13,"triangle",.22);tone(f/2,.3,i*.13,"sine",.12)});[523,659,784,1047].forEach(f=>tone(f,1.4,.95,"triangle",.14));nz(.8,.95,.06,5000)},
+ clap:()=>{for(let i=0;i<18;i++)nz(.07,i*.11+Math.random()*.05,.2,900,null,"bandpass")}};
+function clap(){sfx.clap()}
+const MU={t:null,n:0,nt:0},MD={menu:{bpm:104,ch:[[261.6,329.6,392,493.9],[220,261.6,329.6,392],[174.6,220,261.6,329.6],[196,246.9,293.7,349.2]]},game:{bpm:128,ch:[[220,261.6,329.6,392],[174.6,220,261.6,329.6],[261.6,329.6,392,493.9],[196,246.9,293.7,349.2]]}};
+function beat(at){setTimeout(()=>{PU=1},at*1000)}
+function musicOn(){const x=A();if(!x||!snd.mus||MU.t)return;MU.nt=x.currentTime+.1;MU.n=0;MU.t=setInterval(musS,100)}
+function musicOff(){clearInterval(MU.t);MU.t=null}
+function musS(){const x=snd.x;if(!x)return;const md=MD[snd.mood],sp=60/md.bpm/4,g=snd.mood==="game";while(MU.nt<x.currentTime+.3){const i=MU.n%64,c=md.ch[i>>4],st=i%16,at=Math.max(MU.nt-x.currentTime,0);
+ if(g){if(st%4===0){tone(120,.18,at,"sine",.9,45,snd.mg);beat(at)}if(st===4||st===12)nz(.12,at,.25,1800,snd.mg,"bandpass");if(st%2===0){nz(.03,at,.1,8000,snd.mg);tone(c[0]/2,.2,at,"sawtooth",.16,0,snd.mg)}tone(c[[0,2,1,3,2,1,3,2][(st>>1)%8]]*2,.14,at,"square",.09,0,snd.mg);if(st===0)[0,1,2].forEach(j=>tone(c[j],1.2,at,"triangle",.18,0,snd.mg))}
+ else{if(st%8===0){tone(100,.2,at,"sine",.7,45,snd.mg);beat(at);tone(c[0]/2,.5,at,"sine",.8,0,snd.mg)}if(st%4===2)nz(.03,at,.08,8000,snd.mg);if(st%2===0)tone(c[(st>>1)%4]*2,.3,at,"triangle",.4,0,snd.mg);if(st===0)[0,1,2].forEach(j=>tone(c[j],1.8,at,"sine",.2,0,snd.mg))}
+ if(performance.now()-snd.tT<250)nz(.03,at,.12,6000,snd.mg);MU.nt+=sp;MU.n++}}
+/* suara pemandu bahasa Indonesia (Web Speech, bila tersedia) */
+function speak(t,pr){if(!snd.voice||!window.speechSynthesis||typeof SpeechSynthesisUtterance==="undefined")return;try{if(pr)speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="id-ID";u.rate=1.05;u.pitch=1.25;u.volume=Math.min(1,snd.vol+.25);speechSynthesis.speak(u)}catch(e){}}
+const spk=t=>/^[\d.,\/]+ [+\-x:] /.test(t)?t.replace(/ \+ /g," tambah ").replace(/ - /g," kurang ").replace(/ x /g," kali ").replace(/ : /g," dibagi ").replace("="," sama dengan ").replace("?",""):t;
+$$(".mute").forEach(b=>b.onclick=()=>{snd.on=!snd.on;b.classList.toggle("off",!snd.on);saveSet()});
+$("#musb").onclick=()=>{snd.mus=!snd.mus;$("#musb").classList.toggle("off",!snd.mus);snd.mus?musicOn():musicOff();saveSet()};
+$("#vcb").onclick=()=>{snd.voice=!snd.voice;$("#vcb").classList.toggle("off",!snd.voice);if(!snd.voice&&window.speechSynthesis)speechSynthesis.cancel();saveSet()};
+$("#vol").oninput=e=>{snd.vol=e.target.value/100;if(snd.m)snd.m.gain.value=snd.vol;saveSet()};
+document.addEventListener("click",e=>{A();musicOn();if(e.target.closest&&e.target.closest("button"))sfx.click()});
+function countUp(el,v){if(matchMedia("(prefers-reduced-motion:reduce)").matches||v<=0){el.textContent=v;return}let n=0;const st=Math.max(1,Math.ceil(v/30)),iv=setInterval(()=>{n=Math.min(n+st,v);el.textContent=n;if(n>=v)clearInterval(iv)},30)}
+/* konfeti + kembang api */
+const cf=$("#cf"),cx=cf.getContext("2d");let ps=[],cr=null;
+function confetti(n,o){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;cf.width=innerWidth;cf.height=innerHeight;const sp=o&&o.fw,X=o&&o.x!=null?o.x:innerWidth/2,Y=o&&o.y!=null?o.y:innerHeight*.35;
+ for(let i=0;i<n;i++){const a=Math.random()*6.283,v=sp?Math.random()*11+3:0;ps.push({x:X+(sp?0:(Math.random()-.5)*innerWidth*.6),y:Y,vx:sp?Math.cos(a)*v:(Math.random()-.5)*16,vy:sp?Math.sin(a)*v:-Math.random()*14-4,r:Math.random()*8+4,c:(sp?["#fff","#ffd23f","#ff3d8b","#2ee6a6","#38bdf8"][o.k%5]:["#ffd23f","#ff3d8b","#2ee6a6","#38bdf8","#fff"][i%5]),a:Math.random()*6,va:Math.random()*.4-.2,sh:i%3,l:1,fw:!!sp})}if(!cr)cr=requestAnimationFrame(cfl)}
+function cfl(){cx.clearRect(0,0,cf.width,cf.height);ps.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.vy+=q.fw?.18:.35;if(q.fw)q.vx*=.985;q.a+=q.va;q.l-=q.fw?.014:.004;cx.globalAlpha=Math.max(q.l,0);cx.fillStyle=q.c;
+ if(q.fw){cx.beginPath();cx.arc(q.x,q.y,q.r*.35,0,7);cx.fill()}else{cx.save();cx.translate(q.x,q.y);cx.rotate(q.a);if(q.sh===0)cx.fillRect(-q.r/2,-q.r*.3,q.r,q.r*.6);else if(q.sh===1){cx.beginPath();cx.arc(0,0,q.r*.4,0,7);cx.fill()}else{cx.beginPath();cx.moveTo(0,-q.r*.6);cx.lineTo(q.r*.5,q.r*.4);cx.lineTo(-q.r*.5,q.r*.4);cx.fill()}cx.restore()}});
+ cx.globalAlpha=1;ps=ps.filter(q=>q.y<cf.height+20&&q.l>0);cr=ps.length?requestAnimationFrame(cfl):null;if(!cr)cx.clearRect(0,0,cf.width,cf.height)}
+function fireworks(){for(let i=0;i<5;i++)setTimeout(()=>{confetti(70,{x:innerWidth*(.15+Math.random()*.7),y:innerHeight*(.15+Math.random()*.3),fw:1,k:i});sfx.pop()},i*450)}
+function countdown(msg,cb){combo=0;keepAwake();const o=$("#over");$("#resume").hidden=true;$("#ovmsg").textContent=msg;o.classList.add("on");let n=3;$("#cnt").textContent=n;sfx.tick();speak("Tiga",1);clearInterval(ci);ci=setInterval(()=>{n--;if(n>0){$("#cnt").textContent=n;sfx.tick();speak(n===2?"Dua":"Satu",1)}else{clearInterval(ci);o.classList.remove("on");sfx.go();cb()}},800)}
+function startRound(){const nm=players[pi];if(pi===0)BANK=mkBank();qi=0;score=0;right=0;wrong=0;none=0;locked=true;paused=false;$("#sc").textContent=0;$("#fb").className="";show("play");A();countdown(mode==="giliran"?"Giliran: "+nm:"Bersiap!",()=>{tStart=performance.now();nextQ()})}
+$("#startPlay").onclick=()=>{S.demo=!!(game.pose||game.act)&&!S.on;if(S.demo){D.lane=1;D.duck=false;D.up=false;D.pose=null;toast("Mode tanpa kamera: tekan 1-6 untuk pose; panah kiri/kanan/atas, D = menunduk, U = angkat tangan.")}if(!game.ready){alert(game.n+" dibuat di tahap berikutnya. Coba Jump to Answer dulu.");return}
+ clearTimeout(nt);clearInterval(ci);cancelAnimationFrame(tm);const nl=$("#names").value.split("\n").map(x=>x.trim()).filter(Boolean);
+ players=mode==="giliran"&&nl.length?nl:[nl.length?nl.join(", ").slice(0,40):"Kelompok"];pi=0;session=[];game.pose?startPRound():game.act?startARound():startRound()};
+function nextQ(){if(qi>=BANK.length)return finish();const q=BANK[qi],flip=Math.random()<.5;cur={ans:flip?"L":"R",a:q[1]};$("#qn").textContent=(qi+1)+"/"+BANK.length;$("#qtext").textContent=q[0];speak(spk(q[0]),1);$("#aL").textContent=flip?q[1]:q[2];$("#aR").textContent=flip?q[2]:q[1];
+ $$(".zone").forEach(z=>z.className="zone");$("#fb").className="";S.ok=null;S.cand=null;locked=false;left=total;t0=performance.now();tick()}
+function tick(){cancelAnimationFrame(tm);const f=()=>{if(paused||locked)return;const r=left-(performance.now()-t0);const sc=Math.ceil(r/1000);if(r<3000&&sc!==lt){lt=sc;sfx.tick()}$("#tbar").classList.toggle("low",r<3000);if(r<3000)snd.tT=performance.now();$("#tbar").style.transform=`scaleX(${Math.max(r,0)/total})`;if(r<=0)return pick(S.on?choice():null);tm=requestAnimationFrame(f)};tm=requestAnimationFrame(f)}
+/* pilihan kamera: pilihan stabil terakhir (>=0,35 dtk); seri atau tidak terdeteksi = tidak menjawab */
+function stab(){if(locked||paused)return;const t=performance.now(),m=S.L>S.R?"L":S.R>S.L?"R":null;if(m){if(S.cand!==m){S.cand=m;S.since=t}if(t-S.since>=350){S.ok=m;S.okT=t}}else S.cand=null}
+function choice(){const t=performance.now(),m=S.L>S.R?"L":S.R>S.L?"R":null;if(m&&S.ok===m)return m;if(S.ok&&t-S.okT<800&&!(S.poses.length&&!m))return S.ok;return null}
+function pick(side){if(locked||paused)return;locked=true;cancelAnimationFrame(tm);
+ const ok=side===cur.ans,pts=ok?10:0;if(ok){right++;score+=pts}else if(side)wrong++;else none++;
+ if(side)$("#z"+side).classList.add(ok?"ok":"no");$("#z"+cur.ans).classList.add("ok");$("#sc").textContent=score;popEl($("#sc"));
+ const m=ok?["HEBAT! JAWABAN BENAR!","good"]:side?["YAH, BELUM TEPAT!","bad"]:["WAKTU HABIS!","bad"];
+ $("#fb").innerHTML=`<h3>${ok?ICON.starS:""}${m[0]}</h3><div class="pts">+${pts} POIN</div><p>Jawaban benar: <b>${E(cur.a)}</b></p><p>Soal ${qi+1}/${BANK.length} | Benar ${right} | Total skor ${score}</p>`;
+ $("#fb").className="on "+m[1];fbm(ok?"cheer":"sad");fx(ok);if(ok){combo++;sfx.ok();confetti(60);speak(["Hebat!","Benar!","Mantap!","Keren!"][Math.random()*4|0],1)}else{combo=0;side?sfx.no():sfx.to();speak(side?"Belum tepat":"Waktu habis",1)}
+ qi++;nt=setTimeout(nextQ,3000)}
 $("#zL").onclick=()=>pick("L");$("#zR").onclick=()=>pick("R");
 addEventListener("keydown",e=>{if(!$("#play").classList.contains("on"))return;if(e.key==="ArrowLeft")pick("L");if(e.key==="ArrowRight")pick("R")});
-$("#pause").onclick=()=>{if(locked||paused)return;paused=true;left-=performance.now()-t0;cancelAnimationFrame(tm);$("#ovmsg").textContent="Jeda";$("#cnt").textContent="⏸";$("#resume").hidden=false;$("#over").classList.add("on")};
-$("#resume").onclick=()=>{paused=false;$("#over").classList.remove("on");t0=performance.now();tick()};
-$("#stop").onclick=()=>{cancelAnimationFrame(tm);paused=false;$("#over").classList.remove("on");show("menu")};
+$("#pause").onclick=()=>{if(locked||paused)return;paused=true;left-=performance.now()-t0;cancelAnimationFrame(tm);$("#ovmsg").textContent="Jeda";$("#cnt").innerHTML=ICON.pause;$("#resume").hidden=false;$("#over").classList.add("on")};
+$("#resume").onclick=()=>{if($("#agame").classList.contains("on"))return aResume();if($("#pgame").classList.contains("on"))return pResume();paused=false;$("#over").classList.remove("on");t0=performance.now();tick()};
+$("#stop").onclick=()=>{clearTimeout(nt);clearInterval(ci);cancelAnimationFrame(tm);locked=true;paused=false;$("#fb").className="";$("#over").classList.remove("on");show("menu")};
 const H=()=>{try{return JSON.parse(localStorage.getItem("ppmg")||"[]")}catch(e){return[]}};
-function finish(){const h=H();h.unshift({g:game.n,s:score,r:right,n:BANK.length,d:new Date().toLocaleString("id-ID")});try{localStorage.setItem("ppmg",JSON.stringify(h.slice(0,20)))}catch(e){}
- $("#final").textContent=score;$("#detail").textContent=`Benar ${right} dari ${BANK.length} soal. Di layar ini skor dihitung untuk satu kelompok.`;renderH();show("result")}
-function renderH(){const h=H();$("#hist").innerHTML=h.length?h.slice(0,5).map(x=>`<tr><td>${x.g}</td><td>${x.s} poin</td><td>${x.r}/${x.n}</td><td>${x.d}</td></tr>`).join(""):"<tr><td>Belum ada riwayat.</td></tr>"}
+function finish(){$("#fb").className="";const sec=Math.round((performance.now()-tStart)/1000),n=BANK.length,pct=Math.round(right/n*100),nm=players[pi];
+ const rec={nm,g:game.n,s:score,r:right,w:wrong,x:none,n,pct,sec,d:new Date().toLocaleString("id-ID")};session.push(rec);
+ const h=H();h.unshift(rec);try{localStorage.setItem("ppmg",JSON.stringify(h.slice(0,50)))}catch(e){}
+ $("#pred").innerHTML=ICON.trophy+(pct>=90?"LEGENDA!":pct>=75?"HEBAT!":pct>=60?"BAGUS!":"TETAP SEMANGAT!");$("#rmc").innerHTML=mascot(pct>=60?"cheer":pct>0?"wow":"sad");$("#who").textContent=nm;countUp($("#final"),score);
+ $("#stats").innerHTML=[["Benar",right],["Salah",wrong],["Tidak menjawab",none],["Ketepatan",pct+"%"],["Waktu",Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0")]].map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join("");
+ $("#detail").textContent=mode==="giliran"?"Hasil setiap pemain dicatat terpisah.":"Skor dihitung untuk satu kelompok.";
+ $("#again").textContent=pi<players.length-1?"Pemain berikutnya: "+players[pi+1]:"Main lagi";
+ renderH();show("result");sfx.win();clap();confetti(pct>=60?220:90);if(pct>=60)fireworks();const stn=pct>=90?3:pct>=60?2:pct>0?1:0;$$(".st").forEach((e,i)=>{e.classList.remove("on");if(i<stn)setTimeout(()=>{e.classList.add("on");sfx.star(i)},800+i*450)});speak($("#pred").textContent+" Skor kalian "+score,1)}
+function renderH(){const h=H(),hd="<tr><th>#</th><th>Nama</th><th>Skor</th><th>Benar</th><th>Tepat</th></tr>",pc=x=>x.pct!=null?x.pct:Math.round(x.r/x.n*100);
+ const L=(session.length>1?session:h).slice().sort((a,b)=>b.s-a.s||b.r-a.r).slice(0,8);
+ $("#rkt").textContent=session.length>1?"Peringkat sesi ini":"Peringkat terbaik di perangkat";
+ $("#rank").innerHTML=L.length?hd+L.map((x,i)=>`<tr><td>${i+1}</td><td>${E(x.nm||"-")}</td><td>${x.s}</td><td>${x.r}/${x.n}</td><td>${pc(x)}%</td></tr>`).join(""):"<tr><td>Belum ada data.</td></tr>";
+ $("#hist").innerHTML=h.length?h.slice(0,5).map(x=>`<tr><td>${E(x.nm||x.g)}</td><td>${x.s} poin</td><td>${x.r}/${x.n}</td><td>${E(x.d)}</td></tr>`).join(""):"<tr><td>Belum ada riwayat.</td></tr>"}
 $("#clr").onclick=()=>{try{localStorage.removeItem("ppmg")}catch(e){}renderH()};
-$("#again").onclick=()=>$("#startPlay").click();
+$("#again").onclick=()=>{if(pi<players.length-1){pi++;(game.pose?startPRound:game.act?startARound:startRound)()}else $("#startPlay").click()};
 renderH();
 
 /* ===== Tahap 2: kamera + MediaPipe Pose Landmarker (semua diproses di perangkat) ===== */
@@ -198,21 +504,21 @@ function camErr(e){const n=e&&e.name;return n==="NotAllowedError"||n==="Security
 async function camOn(){
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.isSecureContext){say("Kamera hanya bisa dipakai lewat HTTPS atau localhost. Buka aplikasi lewat alamat https:// GitHub Pages.",1);return}
  const b=$("#camBtn");b.disabled=true;say("Meminta izin kamera... pilih Izinkan pada kotak yang muncul.");
- try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:"user"},audio:false})}catch(e){say(camErr(e),1);b.disabled=false;return}
- vid.srcObject=stream;try{await vid.play()}catch(e){}
+ try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},...(S.cam?{deviceId:{exact:S.cam}}:{facingMode:"user"})},audio:false})}catch(e){if(e&&e.name==="OverconstrainedError")S.cam="";say(camErr(e),1);b.disabled=false;return}
+ vid.srcObject=stream;try{stream.getVideoTracks()[0].onended=()=>{if(S.on){camOff(1);say("Kamera terputus. Tekan Aktifkan kamera lagi.",1)}}}catch(e){}try{await vid.play()}catch(e){}
  say("Memuat model deteksi tubuh (perlu internet, hanya saat pertama kali)...");
  try{if(!pl){lib=await import(MP+"/vision_bundle.mjs");const fs=await lib.FilesetResolver.forVisionTasks(MP+"/wasm");
   const mk=d=>lib.PoseLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:MODEL,delegate:d},runningMode:"VIDEO",numPoses:4});
   try{pl=await mk("GPU")}catch(e){pl=await mk("CPU")}}}
  catch(e){say("Model deteksi gagal dimuat. Periksa koneksi internet lalu coba lagi.",1);camOff(1);return}
- S.on=true;b.disabled=false;b.textContent="Matikan kamera";$("#camBox").classList.add("live");document.body.classList.add("camon");
+ S.on=true;S.demo=false;listCams();keepAwake();b.disabled=false;b.textContent="Matikan kamera";$("#camBox").classList.add("live");document.body.classList.add("camon");
  say("Kamera aktif. Berdirilah sampai seluruh badan terlihat di layar.");loop()}
 function camOff(keep){S.on=false;cancelAnimationFrame(raf);if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;vid.srcObject=null;S.poses=[];S.L=S.R=S.M=0;
  $("#camBox").classList.remove("live");document.body.classList.remove("camon");const b=$("#camBtn");b.textContent="Aktifkan kamera";b.disabled=false;
  $("#live").textContent="";$("#det").textContent="Kamera belum aktif";$("#dot").className="dot";if(!keep)say("Kamera dimatikan.")}
 $("#camBtn").onclick=()=>S.on?camOff():camOn();
 function recompute(){const k=+$("#sens").value;if(S.calL!=null&&S.calR!=null){S.c=(S.calL+S.calR)/2;S.dz=Math.max(.02,(S.calR-S.calL)/2*(.6-.05*k));$("#calst").textContent="Garis tengah: dikalibrasi"}
- else{S.c=.5;S.dz=.02+(10-k)*.008;$("#calst").textContent="Garis tengah: standar"}}
+ else{S.c=.5;S.dz=.02+(10-k)*.008;$("#calst").textContent="Garis tengah: standar"}saveSet()}
 $("#sens").oninput=recompute;
 function rec(side){if(!S.on){say("Aktifkan kamera dulu.",1);return}if(!S.poses.length){say("Belum ada tubuh terdeteksi. Berdirilah di depan kamera dulu.",1);return}
  S.rec={side,sum:0,n:0,until:performance.now()+1200};say("Merekam posisi "+(side==="L"?"KIRI":"KANAN")+"... tetap berdiri 1 detik.")}
@@ -223,22 +529,172 @@ function recDone(){const r=S.rec;S.rec=null;if(r.n<5){say("Tubuh tidak terbaca s
  if(S.calL!=null&&S.calR!=null&&S.calR-S.calL<.12){const w=r.side;S.calL=S.calR=null;recompute();say("Posisi kiri dan kanan terlalu dekat. Berdirilah lebih jauh ke tepi masing-masing sisi, lalu rekam ulang.",1);return}
  recompute();say(S.calL!=null&&S.calR!=null?"Kalibrasi selesai. Garis tengah sudah diatur.":"Posisi "+(r.side==="L"?"KIRI":"KANAN")+" tersimpan. Sekarang rekam sisi satunya.")}
 function loop(){if(!S.on)return;raf=requestAnimationFrame(loop);
- const inPlay=$("#play").classList.contains("on");if(!inPlay&&!$("#calib").classList.contains("on"))return;
+ const inPlay=$("#play").classList.contains("on"),inP=$("#pgame").classList.contains("on");inPose=inP;inAct=$("#agame").classList.contains("on");if(!inPlay&&!inP&&!inAct&&!$("#calib").classList.contains("on"))return;
  if(vid.readyState<2||vid.currentTime===lastT)return;lastT=vid.currentTime;
  const r=pl.detectForVideo(vid,performance.now()),P=[];
  for(const lm of r.landmarks){let h=[lm[23],lm[24]].filter(q=>q&&q.visibility>.4);if(!h.length)h=[lm[11],lm[12]].filter(q=>q&&q.visibility>.4);if(!h.length)continue;P.push({lm,x:1-h.reduce((a,q)=>a+q.x,0)/h.length})}
  let L=0,R=0,M=0;for(const q of P){q.side=q.x<S.c-S.dz?"L":q.x>S.c+S.dz?"R":"M";q.side==="L"?L++:q.side==="R"?R++:M++}
  S.poses=P;S.L=L;S.R=R;S.M=M;
  if(S.rec){if(P.length){S.rec.sum+=P.reduce((a,q)=>a+q.x,0)/P.length;S.rec.n++}if(performance.now()>S.rec.until)recDone()}
- draw(inPlay);ui(inPlay)}
-function draw(inPlay){const cv=inPlay?$("#pc"):$("#cc"),w=vid.videoWidth,h=vid.videoHeight;if(!w)return;if(cv.width!==w){cv.width=w;cv.height=h}
+ if(!inAct)draw(inPlay);ui(inPlay);if(inP)pDetect()}
+function draw(inPlay){const cv=inPose?$("#kc"):inPlay?$("#pc"):$("#cc"),w=vid.videoWidth,h=vid.videoHeight;if(!w)return;if(cv.width!==w){cv.width=w;cv.height=h}
  const x=cv.getContext("2d");x.save();x.translate(w,0);x.scale(-1,1);x.drawImage(vid,0,0,w,h);const du=cv._du||(cv._du=new lib.DrawingUtils(x));
  const col={L:"#38bdf8",R:"#ff9a3d",M:"#ffd23f"};for(const q of S.poses){du.drawConnectors(q.lm,lib.PoseLandmarker.POSE_CONNECTIONS,{color:col[q.side],lineWidth:5});du.drawLandmarks(q.lm,{color:"#fff",radius:3})}
- x.restore();const cx=S.c*w,d=S.dz*w;x.fillStyle="#ffd23f30";x.fillRect(cx-d,0,2*d,h);x.strokeStyle="#ffd23f";x.lineWidth=4;x.setLineDash([14,10]);x.beginPath();x.moveTo(cx,0);x.lineTo(cx,h);x.stroke();x.setLineDash([])}
+ x.restore();if(inPose)return;const cx=S.c*w,d=S.dz*w;x.fillStyle="#ffd23f30";x.fillRect(cx-d,0,2*d,h);x.strokeStyle="#ffd23f";x.lineWidth=4;x.setLineDash([14,10]);x.beginPath();x.moveTo(cx,0);x.lineTo(cx,h);x.stroke();x.setLineDash([])}
 function ui(inPlay){const n=S.poses.length;$("#dot").className="dot"+(n?" ok":"");
  $("#det").textContent=n?`Tubuh terdeteksi: ${n} (kiri ${S.L}, tengah ${S.M}, kanan ${S.R})`:"Belum ada tubuh terdeteksi. Mundur sampai badan terlihat.";
- if(inPlay){$("#live").textContent=`Kiri ${S.L} | Kanan ${S.R} | dikunci saat waktu habis`;if(!S.rec){$("#zL").classList.toggle("hot",!locked&&S.L>S.R);$("#zR").classList.toggle("hot",!locked&&S.R>S.L)}}}
-recompute();
+ if(inPlay){stab();$("#live").textContent=`Kiri ${S.L} | Kanan ${S.R} | dikunci saat waktu habis`;if(!S.rec){$("#zL").classList.toggle("hot",!locked&&S.L>S.R);$("#zR").classList.toggle("hot",!locked&&S.R>S.L)}}}
+loadSet();recompute();
+
+/* ===== Tahap 5-ish: game pose (Human Shape, Follow the Pose, Balance, Body Dance) ===== */
+const PN=["Angkat kedua tangan!","Rentangkan kedua tangan!","Angkat tangan KIRI!","Angkat tangan KANAN!","Tangan di kepala!","Tangan turun, siaga!"];
+const ARM=[[[22,26,12,10],[78,26,88,10]],[[18,38,2,38],[82,38,98,38]],[[25,24,20,8],[70,56,70,72]],[[30,56,30,72],[75,24,80,8]],[[22,30,42,18],[78,30,58,18]],[[30,56,30,72],[70,56,70,72]]];
+function fig(k,c){const A=ARM[k],l=(a,t)=>`M${t} L${a[0]} ${a[1]} L${a[2]} ${a[3]}`;return `<svg viewBox="0 0 100 100"><defs><linearGradient id="fg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="#d8fff0"/><stop offset="1" stop-color="${c}"/></linearGradient></defs><g fill="none" stroke="url(#fg)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M50 56V68M50 68L41 95M50 68L59 95"/><path d="${l(A[0],"36 38")} ${l(A[1],"64 38")}"/></g><circle cx="50" cy="19" r="11" fill="url(#fg)"/><rect x="34" y="31" width="32" height="34" rx="14" fill="url(#fg)"/><circle cx="46" cy="18" r="1.8" fill="#17104f"/><circle cx="54" cy="18" r="1.8" fill="#17104f"/></svg>`}
+/* membaca pose dari landmark (satuan piksel; kiri/kanan = tangan pemain sendiri, tampil di sisi yang sama pada layar cermin) */
+function poseOf(l){const w=vid.videoWidth||1280,h=vid.videoHeight||720,g=i=>l[i]&&l[i].visibility>.4?{x:l[i].x*w,y:l[i].y*h}:null,n=g(0),ls=g(11),rs=g(12),wl=g(15),wr=g(16);if(!n||!ls||!rs||!wl||!wr)return null;
+ const sw=Math.abs(ls.x-rs.x);if(sw<20)return null;const sy=(ls.y+rs.y)/2,up=q=>q.y<n.y-.5*sw,dn=q=>q.y>sy+.3*sw,arm=(q,t)=>Math.abs(q.y-t.y)<.45*sw&&Math.abs(q.x-t.x)>sw,hd=q=>Math.abs(q.y-n.y)<.7*sw&&Math.abs(q.x-n.x)<sw;
+ if(up(wl)&&dn(wr))return 2;if(up(wr)&&dn(wl))return 3;if(up(wl)&&up(wr))return 0;if(arm(wl,ls)&&arm(wr,rs))return 1;if(hd(wl)&&hd(wr))return 4;if(dn(wl)&&dn(wr))return 5;return null}
+const swd=l=>l[11]&&l[12]?Math.abs(l[11].x-l[12].x):0;
+const P={qs:null,cur:null,hid:null,T:5,all:[],tgt:[],k:0,sc:0,ok:0,fail:0,lock:true,paused:false,t0:0,left:0,h0:0,m0:0,tS:0,raf:0,nt:0};
+function startPRound(){const c=game.pose,nm=players[pi];
+ if(pi===0){P.qs=$("#quiz").checked?mkBank():null;if(P.qs&&!P.qs.length)P.qs=null;
+  if(P.qs)P.all=P.qs.map(()=>0);else{let pv=-1;P.all=Array.from({length:+$("#nq").value<c.n?c.n:Math.max(c.n,Math.min(+$("#nq").value,c.n*2))},()=>{let r;do r=Math.random()*6|0;while(r===pv);return pv=r})}}
+ Object.assign(P,{tgt:P.all,k:0,sc:0,ok:0,fail:0,lock:true,paused:false});$("#psc").textContent=0;$("#fb").className="";show("pgame");A();
+ countdown(mode==="giliran"?"Giliran: "+nm:"Bersiap!",()=>{P.tS=performance.now();pNext()})}
+function pNext(){if(P.k>=P.tgt.length)return pFinish();const c=game.pose,w=$("#wall");P.lock=false;P.h0=0;P.m0=0;P.hid=null;P.T=P.qs?Math.max(c.t,10):c.t;P.left=P.T*1000;P.t0=performance.now();
+ $("#pn").textContent=`${players[pi]}  ${P.k+1}/${P.tgt.length}`;$("#hold").firstElementChild.style.width="0";$("#fb").className="";
+ if(P.qs){const q=P.qs[P.k],fl=Math.random()<.5,l=fl?q[1]:q[2],r=fl?q[2]:q[1];P.cur={corr:fl?2:3,wrong:fl?3:2,a:q[1]};$("#pname").textContent=q[0];$("#psvg").innerHTML=`<div class="ans"><div>${ICON.hand} KIRI<b>${E(l)}</b></div><div>KANAN <span class="hm">${ICON.hand}</span><b>${E(r)}</b></div></div>`;speak(spk(q[0]),1)}
+ else{const k=P.tgt[P.k];$("#pname").textContent=PN[k];speak(PN[k],1);$("#psvg").innerHTML=fig(k,"#2ee6a6")}
+ w.className="";void w.offsetWidth;if(c.wall){sfx.whoosh();w.style.setProperty("--d",P.T+"s");w.className="go"}pTick()}
+function pTick(){cancelAnimationFrame(P.raf);const f=()=>{if(P.paused||P.lock)return;const r=P.left-(performance.now()-P.t0);$("#ptbar").classList.toggle("low",r<3000);if(r<3000)snd.tT=performance.now();$("#ptbar").style.transform=`scaleX(${Math.max(r,0)/(P.T*1000)})`;if(r<=0)return pEnd(false,"t");P.raf=requestAnimationFrame(f)};P.raf=requestAnimationFrame(f)}
+function pDetect(){const b=S.poses.slice().sort((a,c)=>swd(c.lm)-swd(a.lm))[0],id=b?poseOf(b.lm):null;$("#pnow").textContent="Terbaca: "+(id==null?"-":PN[id].replace("!",""));
+ if(P.lock||P.paused)return;const t=performance.now(),h=$("#hold").firstElementChild;
+ if(P.qs){if(id===2||id===3){P.m0=0;if(P.hid!==id){P.hid=id;P.h0=t}const pr=Math.min((t-P.h0)/900,1);h.style.width=pr*100+"%";if(pr>=1)pEnd(id===P.cur.corr,"w")}else{P.hid=null;if(!P.m0)P.m0=t;if(t-P.m0>300){P.h0=0;h.style.width="0"}}return}
+ if(id===P.tgt[P.k]){P.m0=0;if(!P.h0)P.h0=t;const pr=Math.min((t-P.h0)/game.pose.h,1);h.style.width=pr*100+"%";if(pr>=1)pEnd(true)}
+ else{if(!P.m0)P.m0=t;if(t-P.m0>400){P.h0=0;h.style.width="0"}}}
+function pEnd(ok,why){if(P.lock)return;P.lock=true;cancelAnimationFrame(P.raf);$("#wall").className="";ok?(P.ok++,P.sc+=10):P.fail++;$("#psc").textContent=P.sc;popEl($("#psc"));
+ $("#fb").innerHTML=ok?`<h3>${ICON.starS}HEBAT! ${P.qs?"JAWABAN BENAR!":"POSE TEPAT!"}</h3><div class="pts">+10 POIN</div>`:`<h3>${why==="w"?"YAH, BELUM TEPAT!":"WAKTU HABIS!"}</h3><div class="pts">+0 POIN</div>${P.qs?`<p>Jawaban benar: ${E(P.cur.a)}</p>`:`<p>Pose: ${PN[P.tgt[P.k]]}</p>`}`;
+ $("#fb").className="on "+(ok?"good":"bad");fbm(ok?"cheer":"sad");fx(ok);if(ok){combo++;sfx.ok();confetti(60);speak("Hebat!",1)}else{combo=0;why==="w"?sfx.no():sfx.to();speak(why==="w"?"Belum tepat":"Waktu habis",1)}P.k++;P.nt=setTimeout(pNext,P.qs?2800:game.pose.t<=3?1100:2200)}
+function pFinish(){$("#fb").className="";score=P.sc;right=P.ok;wrong=P.fail;none=0;BANK=P.tgt;tStart=P.tS;finish()}
+$("#ppause").onclick=()=>{if(P.lock||P.paused)return;P.paused=true;P.left-=performance.now()-P.t0;cancelAnimationFrame(P.raf);$("#wall").classList.add("paused");$("#ovmsg").textContent="Jeda";$("#cnt").innerHTML=ICON.pause;$("#resume").hidden=false;$("#over").classList.add("on")};
+function pResume(){P.paused=false;$("#over").classList.remove("on");$("#wall").classList.remove("paused");P.t0=performance.now();P.h0=0;pTick()}
+$("#pstop").onclick=()=>{clearTimeout(P.nt);clearInterval(ci);cancelAnimationFrame(P.raf);P.lock=true;P.paused=false;$("#wall").className="";$("#fb").className="";$("#over").classList.remove("on");show("menu")};
+
+/* ===== Obstacle Escape + Dodge the Ball (rintangan datang; kelompok menghindar; penilaian kolektif) ===== */
+const G={ph:"",k:0,n:10,lives:3,sc:0,ok:0,bad:0,un:0,u:0,f:0,T:3.4,cur:null,paused:false,raf:0,last:0,tS:0,flash:0,fc:"#2ee6a6",prev:""};
+const LN=["KIRI","TENGAH","KANAN"];
+function bodyState(q){const l=q.lm,w=vid.videoWidth||1280,h=vid.videoHeight||720,g=i=>l[i]&&l[i].visibility>.4?{x:l[i].x*w,y:l[i].y*h}:null,n=g(0),ls=g(11),rs=g(12),wl=g(15),wr=g(16),hl=g(23),hr=g(24),kl=g(25),kr=g(26);
+ const d=Math.max(.1,S.calL!=null&&S.calR!=null?(S.calR-S.calL)/6:.12),st={lane:q.x<S.c-d?0:q.x>S.c+d?2:1,duck:false,up:false};
+ if(n&&ls&&rs){const sw=Math.abs(ls.x-rs.x);if(sw>20){const sy=(ls.y+rs.y)/2;if(wl&&wr)st.up=wl.y<n.y-.5*sw&&wr.y<n.y-.5*sw;st.duck=(sy-n.y)/sw<.3;if(hl&&hr&&kl&&kr)st.duck=st.duck||((kl.y+kr.y)/2-(hl.y+hr.y)/2)/sw<.6}}return st}
+function startARound(){Object.assign(G,{pt:[],res:[],ph:"",k:0,n:+$("#nq").value,lives:3,sc:0,ok:0,bad:0,un:0,u:0,f:0,cur:null,paused:false,prev:"",flash:0});G.qs=$("#quiz").checked?mkBank():null;if(G.qs&&!G.qs.length)G.qs=null;if(G.qs)G.n=Math.min(G.n,G.qs.length);$("#asc").textContent=0;$("#alv").innerHTML=hearts(3);$("#an").textContent="";$("#fb").className="";show("agame");A();
+ countdown("Berdiri di tengah, siap menghindar!",()=>{G.tS=performance.now();G.last=performance.now();aNext();cancelAnimationFrame(G.raf);G.raf=requestAnimationFrame(aLoop)})}
+function aNext(){if(G.k>=G.n||G.lives<=0)return aFinish();const dg=game.act.dodge;let ty;if(dg)ty="ball";else{do ty=["lane","lane","duck","raise"][Math.random()*4|0];while(ty===G.prev&&ty!=="lane")}G.prev=ty;
+ const bl=[];if(ty==="lane"||ty==="ball"){const a=[0,1,2],m=Math.random()<.5?1:2;for(let i=0;i<m;i++)bl.push(a.splice(Math.random()*a.length|0,1)[0])}
+ G.cur={ty,bl};G.T=Math.max(1.8,(dg?2.6:3.6)-.1*G.k);if(G.qs){const q=G.qs[G.k],fl=Math.random()<.5,cr=fl?0:2,wr=fl?2:0;G.cur={ty:dg?"ball":"lane",bl:[1,wr],q:{t:q[0],a:q[1],lab:{[cr]:q[1],[wr]:q[2]},cr}};G.T=Math.max(2.8,(dg?4:5)-.08*G.k);speak(spk(q[0]),1)}G.u=0;G.ph="run";$("#fb").className="";$("#an").textContent=`${G.k+1}/${G.n}`;sfx.whoosh()}
+function aEval(){const B=S.poses.map(bodyState),c=G.cur,tot=B.length,W=vid.videoWidth||1280,H=vid.videoHeight||720,okOf=b=>c.ty==="duck"?b.duck:c.ty==="raise"?b.up:!c.bl.includes(b.lane),R=B.map(okOf),pc=R.filter(Boolean).length;
+ G.res=S.poses.map((q,i)=>({x:q.x,ok:R[i]}));G.ph="fb";G.f=2;G.k++;G.flash=.6;let t,cl,pt;
+ if(!tot){G.un++;t="TIDAK ADA PEMAIN TERLIHAT";cl="bad";pt="+0 POIN"}
+ else if(pc*2>tot){G.ok++;G.sc+=10;t=ICON.starS+"AMAN! KALIAN HEBAT!";cl="good";pt="+10 POIN";G.fc="#2ee6a6";fx(true);combo++;sfx.ok();confetti(50);speak("Aman!",1)}
+ else{G.bad++;G.lives--;t="AWAS! KENA RINTANGAN!";cl="bad";pt="-1 NYAWA";G.fc="#ff4d4d";fx(false);combo=0;sfx.hit();speak("Awas!",1);for(let i=0;i<45;i++)G.pt.push({x:W/2,y:H*.7,vx:(Math.random()-.5)*900,vy:-Math.random()*700,l:1,c:["#ff4d4d","#ff9a3d","#ffd23f"][i%3]})}
+ $("#asc").textContent=G.sc;popEl($("#asc"));$("#alv").innerHTML=hearts(G.lives);
+ $("#fb").innerHTML=`<h3>${t}</h3><div class="pts">${pt}</div>${tot?`<p>${pc} dari ${tot} pemain aman</p>`:""}${c.q?`<p>Jawaban benar: ${E(c.q.a)}</p>`:""}`;$("#fb").className="on "+cl;fbm(cl==="good"?"cheer":tot?"sad":"wow")}
+function aStep(dt){if(G.paused)return;if(G.ph==="run"){G.u+=dt/G.T;if(G.u>=1){G.u=1;aEval()}}else if(G.ph==="fb"){G.f-=dt;if(G.f<=0)aNext()}if(G.flash>0)G.flash-=dt;G.pt.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=1400*dt;p.l-=dt*1.1});G.pt=G.pt.filter(p=>p.l>0)}
+function aLoop(t){if(!$("#agame").classList.contains("on"))return;G.raf=requestAnimationFrame(aLoop);const dt=Math.min((t-G.last)/1000,.1);G.last=t;aStep(dt);aDraw()}
+const SK=Array.from({length:24},(_,i)=>({x:i/24+Math.random()*.01,w:.028+Math.random()*.03,h:.05+Math.random()*.13,l:Math.random()}));
+const STR=Array.from({length:50},()=>({x:Math.random(),y:Math.random()*.27,r:Math.random()*1.8+.5,p:Math.random()*6}));
+function aDraw(){const cv=$("#ac"),w=vid.videoWidth||1280,h=vid.videoHeight||720;if(cv.width!==w){cv.width=w;cv.height=h}const x=cv.getContext("2d"),hz=h*.3,T=performance.now()/1000;
+ const sky=x.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#0c0638");sky.addColorStop(.55,"#4a1496");sky.addColorStop(1,"#d0337f");x.fillStyle=sky;x.fillRect(0,0,w,hz);
+ for(const s of STR){x.globalAlpha=.35+.65*Math.abs(Math.sin(T+s.p));x.fillStyle="#fff";x.fillRect(s.x*w,s.y*h,s.r,s.r)}x.globalAlpha=1;
+ const sr=w*.13,sx=w/2,sy=hz-sr*.5;x.save();x.beginPath();x.arc(sx,sy,sr,0,7);x.clip();const sg=x.createLinearGradient(0,sy-sr,0,sy+sr);sg.addColorStop(0,"#ffe45c");sg.addColorStop(1,"#ff3d8b");x.fillStyle=sg;x.fillRect(sx-sr,sy-sr,sr*2,sr*2);x.fillStyle="#4a1496";for(let i=0;i<6;i++)x.fillRect(sx-sr,sy+sr*(.02+i*.17),sr*2,sr*.02+i*sr*.026);x.restore();
+ x.fillStyle="#1b0d57";for(const b of SK){const bw=b.w*w,bh=b.h*h;x.fillRect(b.x*w,hz-bh,bw,bh);x.fillStyle="#ffd23f66";for(let r=0;r<bh/14;r++)if((r*7+(b.l*10|0))%3===0)x.fillRect(b.x*w+bw*.2,hz-bh+r*14+3,bw*.22,5);x.fillStyle="#1b0d57"}
+ const fl=x.createLinearGradient(0,hz,0,h);fl.addColorStop(0,"#2d1078");fl.addColorStop(1,"#0b0830");x.fillStyle=fl;x.fillRect(0,hz,w,h-hz);
+ if(S.on&&vid.videoWidth&&lib){x.save();x.translate(w,0);x.scale(-1,1);x.globalAlpha=.42;x.drawImage(vid,0,0,w,h);x.globalAlpha=1;const du=cv._du||(cv._du=new lib.DrawingUtils(x));x.shadowBlur=14;x.shadowColor="#ffd23f";for(const q of S.poses){du.drawConnectors(q.lm,lib.PoseLandmarker.POSE_CONNECTIONS,{color:"#ffd23f",lineWidth:5});du.drawLandmarks(q.lm,{color:"#fff",radius:3})}x.shadowBlur=0;x.restore()}
+ x.strokeStyle="#ff3d8b88";x.lineWidth=2;for(let i=0;i<9;i++){const z=(i/9+(T*.3)%(1/9))%1,y=hz+(h-hz)*z*z;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke()}
+ const cxk=(k,z)=>(w/2+(k-1)*w*.07)*(1-z)+(w*(k+.5)/3)*z,wk=z=>w*.07*(1-z)+w/3*z,c=G.cur,tx=(t,px,py,sz,col)=>{x.font=`800 ${sz}px "Baloo 2",sans-serif`;x.textAlign="center";x.lineWidth=sz*.14;x.strokeStyle="#000a";x.strokeText(t,px,py);x.fillStyle=col;x.fillText(t,px,py)};
+ const safe=c&&!c.q&&(c.ty==="lane"||c.ty==="ball")?[0,1,2].filter(k=>!c.bl.includes(k)):[];
+ for(let k=0;k<3;k++){x.beginPath();x.moveTo(cxk(k,0)-wk(0)/2,hz);x.lineTo(cxk(k,0)+wk(0)/2,hz);x.lineTo(cxk(k,1)+wk(1)/2,h);x.lineTo(cxk(k,1)-wk(1)/2,h);x.closePath();x.fillStyle=safe.includes(k)?"#2ee6a645":"#ffffff10";x.fill();x.strokeStyle="#38bdf8aa";x.lineWidth=5;x.stroke();x.strokeStyle="#ffffffaa";x.lineWidth=1.5;x.stroke()}
+ const box=(cx,yb,bw,bh)=>{const d=bh*.16,bx=cx-bw/2,by=yb-bh;x.fillStyle="#0007";x.beginPath();x.ellipse(cx,yb,bw*.58,bh*.1,0,0,7);x.fill();const g=x.createLinearGradient(0,by,0,yb);g.addColorStop(0,"#ff8a8a");g.addColorStop(1,"#a01c2c");x.fillStyle=g;x.fillRect(bx,by,bw,bh);x.fillStyle="#ffffff40";x.beginPath();x.moveTo(bx,by);x.lineTo(bx+bw,by);x.lineTo(bx+bw*.9,by-d);x.lineTo(bx+bw*.1,by-d);x.fill();x.strokeStyle="#fff";x.lineWidth=Math.max(2,bh*.025);x.strokeRect(bx,by,bw,bh);x.globalAlpha=.3;x.beginPath();x.moveTo(bx,by);x.lineTo(bx+bw,yb);x.moveTo(bx+bw,by);x.lineTo(bx,yb);x.stroke();x.globalAlpha=1};
+ const sign=(px,py,r)=>{x.fillStyle="#fff";x.beginPath();x.arc(px,py,r,0,7);x.fill();x.strokeStyle="#e0383a";x.lineWidth=r*.22;x.beginPath();x.arc(px,py,r*.8,0,7);x.stroke();x.fillStyle="#e0383a";x.fillRect(px-r*.5,py-r*.13,r,r*.26)};
+ const ball=(bx,by,r)=>{x.shadowBlur=26;x.shadowColor="#ff7a3d";const g=x.createRadialGradient(bx-r*.35,by-r*.35,r*.1,bx,by,r);g.addColorStop(0,"#fff");g.addColorStop(.35,"#ffd0a0");g.addColorStop(1,"#e0451f");x.fillStyle=g;x.beginPath();x.arc(bx,by,r,0,7);x.fill();x.shadowBlur=0;x.fillStyle="#7a1f14";for(let i=0;i<5;i++){const a=T*3+i*1.2566;x.beginPath();x.arc(bx+Math.cos(a)*r*.55,by+Math.sin(a)*r*.55,r*.17,0,7);x.fill()}x.fillStyle="#fff9";x.beginPath();x.ellipse(bx-r*.35,by-r*.4,r*.22,r*.12,-.6,0,7);x.fill()};
+ if(c&&G.ph){const z=G.ph==="run"?G.u:1,yy=hz+(h-hz)*z*z,s=Math.max(z,.05);
+  if(c.ty==="lane")for(const k of c.bl){const bw=wk(z)*.92,bh=s*h*.34,px=cxk(k,z);box(px,yy,bw,bh);sign(px,yy-bh*.5,Math.min(bw,bh)*.3)}
+  else if(c.ty==="ball")for(const k of c.bl){const r=s*w*.085,bx=cxk(k,z),by=yy-r*1.2;x.fillStyle="#0007";x.beginPath();x.ellipse(bx,yy,r,r*.28,0,0,7);x.fill();for(let j=3;j>0;j--){x.globalAlpha=.12*(4-j);x.fillStyle="#ff9a3d";x.beginPath();x.arc(bx,by-j*r*.5,r*(1-j*.12),0,7);x.fill()}x.globalAlpha=1;ball(bx,by,r)}
+  else if(c.ty==="duck"){const bt=h*(.05+.3*z),bh=s*h*.13;x.fillStyle="#cfd8e6";x.fillRect(w*.06,0,bh*.55,bt+bh);x.fillRect(w*.94-bh*.55,0,bh*.55,bt+bh);x.fillStyle="#0006";x.fillRect(0,bt+bh,w,bh*.18);x.fillStyle="#ffd23f";x.fillRect(0,bt,w,bh);x.fillStyle="#222";for(let i=-1;i<w/(bh*1.4);i++){x.beginPath();x.moveTo(i*bh*1.4,bt);x.lineTo(i*bh*1.4+bh*.7,bt);x.lineTo(i*bh*1.4+bh*.3,bt+bh);x.lineTo(i*bh*1.4-bh*.4,bt+bh);x.fill()}x.fillStyle="#fff4";x.fillRect(0,bt,w,bh*.18);tx("MENUNDUK!",w/2,bt+bh*.82,Math.max(bh*.8,20),"#fff")}
+  else{const bw=w*(.3+.7*z),bh=s*h*.14,lx=w/2-bw/2,rx=w/2+bw/2;x.fillStyle="#0007";x.beginPath();x.ellipse(w/2,yy,bw*.52,bh*.18,0,0,7);x.fill();const g=x.createLinearGradient(0,yy-bh,0,yy);g.addColorStop(0,"#e2aa65");g.addColorStop(.5,"#9a6a33");g.addColorStop(1,"#5a3a14");x.fillStyle=g;x.fillRect(lx,yy-bh,bw,bh);for(const ex of [lx,rx]){x.fillStyle="#e8b878";x.beginPath();x.ellipse(ex,yy-bh/2,bh*.22,bh/2,0,0,7);x.fill();x.strokeStyle="#5a3a14";x.lineWidth=2;x.beginPath();x.ellipse(ex,yy-bh/2,bh*.12,bh*.3,0,0,7);x.stroke()}tx("ANGKAT TANGAN!",w/2,yy-bh*.2,Math.max(bh*.8,20),"#fff")}}
+ if(c&&c.q&&G.ph){const zz=G.ph==="run"?G.u:1,yb=hz+(h-hz)*zz*zz,ss=Math.max(zz,.08);for(const k of [0,2]){const sz=Math.max(14,ss*h*.09),t=c.q.lab[k];x.font=`800 ${sz}px "Baloo 2",sans-serif`;const tw=((x.measureText(t)||{}).width||sz*t.length*.5)+sz,px=cxk(k,zz),py=yb-ss*h*.42,gp=x.createLinearGradient(0,py-sz,0,py+sz*.4);gp.addColorStop(0,"#3a2a9c");gp.addColorStop(1,"#17104f");x.fillStyle=gp;x.fillRect(px-tw/2,py-sz,tw,sz*1.4);x.strokeStyle="#ffd23f";x.lineWidth=3;x.strokeRect(px-tw/2,py-sz,tw,sz*1.4);tx(t,px,py,sz,"#fff")}}
+ const hero=(px,py,u,col,st)=>{x.save();x.translate(px,py);x.fillStyle="#0007";x.beginPath();x.ellipse(0,0,u*.9,u*.22,0,0,7);x.fill();x.shadowBlur=18;x.shadowColor=col;x.fillStyle=col;const hy=st.duck?-u*1.7:-u*2.6;x.fillRect(-u*.4,-u*1.2,u*.32,u*1.2);x.fillRect(u*.08,-u*1.2,u*.32,u*1.2);x.beginPath();x.moveTo(-u*.6,-u*1.2);x.lineTo(u*.6,-u*1.2);x.lineTo(u*.45,hy+u*.55);x.lineTo(-u*.45,hy+u*.55);x.fill();x.strokeStyle=col;x.lineWidth=u*.26;x.lineCap="round";x.beginPath();if(st.up){x.moveTo(-u*.55,hy+u*.7);x.lineTo(-u*.9,hy-u*.5);x.moveTo(u*.55,hy+u*.7);x.lineTo(u*.9,hy-u*.5)}else{x.moveTo(-u*.55,hy+u*.7);x.lineTo(-u*.8,hy+u*1.5);x.moveTo(u*.55,hy+u*.7);x.lineTo(u*.8,hy+u*1.5)}x.stroke();x.shadowBlur=0;x.fillStyle="#ffe0b8";x.beginPath();x.arc(0,hy,u*.38,0,7);x.fill();x.restore()};
+ for(const q of S.poses){const r=G.flash>0&&G.res.find(a=>a.x===q.x),st=bodyState(q);hero(q.x*w,h*.94,h*.04,r?(r.ok?"#2ee6a6":"#ff4d4d"):["#38bdf8","#ffd23f","#ff9a3d"][st.lane],st)}
+ x.globalCompositeOperation="lighter";for(const p of G.pt){x.globalAlpha=Math.max(p.l,0);x.fillStyle=p.c;x.fillRect(p.x-6,p.y-6,12,12)}x.globalAlpha=1;x.globalCompositeOperation="source-over";
+ if(G.ph==="run"){x.fillStyle=G.u>.75?"#ff4d4d":"#ffd23f";x.fillRect(0,0,w*G.u,8)}
+ const msg=!c?"":c.q?c.q.t:c.ty==="lane"||c.ty==="ball"?(c.ty==="ball"?"HINDARI BOLA! ":"")+"AMAN: "+safe.map(k=>LN[k]).join(" / "):c.ty==="duck"?"MENUNDUK ATAU JONGKOK!":"ANGKAT KEDUA TANGAN!";
+ if(msg){const sz=h*.07;x.font=`800 ${sz}px "Baloo 2",sans-serif`;const tw=((x.measureText(msg)||{}).width||w*.5)+sz*1.2,gp=x.createLinearGradient(0,h*.09-sz,0,h*.09+sz*.4);gp.addColorStop(0,"#3a2a9ccc");gp.addColorStop(1,"#17104fcc");x.fillStyle=gp;x.fillRect(w/2-tw/2,h*.09-sz*.95,tw,sz*1.3);x.strokeStyle="#ffd23f";x.lineWidth=3;x.strokeRect(w/2-tw/2,h*.09-sz*.95,tw,sz*1.3);tx(msg,w/2,h*.09,sz,"#ffd23f")}
+ tx("Pemain terlihat: "+S.poses.length,w*.14,h*.985,h*.04,"#fff");
+ if(G.flash>0){x.globalAlpha=Math.min(G.flash,.5)*.5;x.fillStyle=G.fc;x.fillRect(0,0,w,h);x.globalAlpha=1}}
+function aFinish(){cancelAnimationFrame(G.raf);G.ph="";$("#fb").className="";score=G.sc;right=G.ok;wrong=G.bad;none=G.un;BANK=Array(Math.max(G.k,1)).fill(0);tStart=G.tS;finish()}
+$("#apause").onclick=()=>{if(G.paused||!G.ph)return;G.paused=true;$("#ovmsg").textContent="Jeda";$("#cnt").innerHTML=ICON.pause;$("#resume").hidden=false;$("#over").classList.add("on")};
+function aResume(){G.paused=false;$("#over").classList.remove("on")}
+$("#astop").onclick=()=>{cancelAnimationFrame(G.raf);clearInterval(ci);G.paused=false;G.ph="";$("#fb").className="";$("#over").classList.remove("on");show("menu")};
+
+/* ===== Sistem: efek visual, pengaturan tersimpan, layar penuh, jeda otomatis, mode tanpa kamera ===== */
+function fx(ok){const f=$("#flash");f.className="";void f.offsetWidth;f.className=ok?"g":"r";if(!ok){const a=document.querySelector(".arena");if(a){a.classList.remove("shake");void a.offsetWidth;a.classList.add("shake")}}}
+function popEl(e){e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop")}
+let tt=0;function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),6000)}
+window.onerror=()=>{toast("Terjadi kesalahan kecil. Jika layar macet, muat ulang halaman.")};
+function saveSet(){try{localStorage.setItem("ppset",JSON.stringify({sens:$("#sens").value,calL:S.calL,calR:S.calR,vol:snd.vol,on:snd.on,mus:snd.mus,voice:snd.voice,cam:S.cam||""}))}catch(e){}}
+function loadSet(){try{const o=JSON.parse(localStorage.getItem("ppset")||"{}");if(o.sens)$("#sens").value=o.sens;if(o.calL!=null)S.calL=o.calL;if(o.calR!=null)S.calR=o.calR;if(o.vol!=null){snd.vol=o.vol;$("#vol").value=Math.round(o.vol*100)}
+ if(o.on===false)snd.on=false;if(o.mus===false)snd.mus=false;if(o.voice===false)snd.voice=false;if(o.cam)S.cam=o.cam;
+ $$(".mute").forEach(b=>b.classList.toggle("off",!snd.on));$("#musb").classList.toggle("off",!snd.mus);$("#vcb").classList.toggle("off",!snd.voice)}catch(e){}}
+async function listCams(){try{const d=(await navigator.mediaDevices.enumerateDevices()).filter(x=>x.kind==="videoinput"),sel=$("#camsel");sel.innerHTML='<option value="">Kamera otomatis</option>'+d.map((x,i)=>`<option value="${E(x.deviceId)}">${E(x.label||"Kamera "+(i+1))}</option>`).join("");sel.value=S.cam||""}catch(e){}}
+$("#camsel").onchange=()=>{S.cam=$("#camsel").value;saveSet();if(S.on){camOff(1);camOn()}};
+let wl=null;async function keepAwake(){try{if(navigator.wakeLock&&!wl){wl=await navigator.wakeLock.request("screen");wl.addEventListener("release",()=>{wl=null})}}catch(e){}}
+$("#fsb").onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}};
+document.addEventListener("visibilitychange",()=>{if(document.hidden){[["#pause","#play"],["#ppause","#pgame"],["#apause","#agame"]].forEach(a=>{if($(a[1]).classList.contains("on")&&$(a[0]).onclick)$(a[0]).onclick()})}else keepAwake()});
+/* mode tanpa kamera (uji coba/cadangan): keyboard menggantikan gerakan */
+const D={lane:1,duck:false,up:false,pose:null};
+const DP=[{15:[.62,.12],16:[.38,.12]},{15:[.72,.4],16:[.28,.4]},{15:[.62,.12],16:[.43,.62]},{15:[.57,.62],16:[.38,.12]},{15:[.54,.25],16:[.46,.25]},{15:[.56,.62],16:[.44,.62]}];
+function synth(){const a=Array.from({length:33},()=>({x:.5,y:.5,visibility:1})),B={0:[.5,D.duck?.38:.28],11:[.55,.4],12:[.45,.4],23:[.53,.62],24:[.47,.62],25:[.53,.8],26:[.47,.8],...(D.up?DP[0]:D.pose!=null?DP[D.pose]:DP[5])};for(const i in B)a[i]={x:B[i][0],y:B[i][1],visibility:1};return{lm:a,x:[.25,.5,.75][D.lane]}}
+addEventListener("keydown",e=>{if(!S.demo)return;const k=e.key;if(/^[1-6]$/.test(k))D.pose=+k-1;else if(k==="0"||k===" ")D.pose=null;else if(k==="ArrowLeft")D.lane=0;else if(k==="ArrowRight")D.lane=2;else if(k==="ArrowUp")D.lane=1;else if(k==="d"||k==="D")D.duck=!D.duck;else if(k==="u"||k==="U")D.up=!D.up});
+setInterval(()=>{if(!S.demo||S.on)return;const b=synth();S.poses=[b];S.L=b.x<.44?1:0;S.R=b.x>.56?1:0;S.M=1-S.L-S.R;if($("#pgame").classList.contains("on")){pDetect();const c=$("#kc"),x=c.getContext("2d");c.width=640;c.height=360;x.fillStyle="#0b0830";x.fillRect(0,0,640,360);x.fillStyle="#fff";x.font="800 28px sans-serif";x.textAlign="center";x.fillText("MODE TANPA KAMERA",320,150);x.fillText("Tekan 1-6 untuk pose",320,195)}},33);
+/* latar partikel neon yang berdenyut mengikuti ketukan musik */
+const bgc=$("#bg"),bx=bgc.getContext("2d"),orbs=Array.from({length:42},()=>({x:Math.random(),y:Math.random(),r:Math.random()*.014+.005,s:Math.random()*.05+.012,h:Math.random()*360}));let PU=0,bgT=0;
+function fxLoop(t){requestAnimationFrame(fxLoop);if(t-bgT<33)return;const dt=(t-bgT)/1000;bgT=t;PU=Math.max(0,PU-.07);document.documentElement.style.setProperty("--pu",PU.toFixed(2));
+ if(["#play","#pgame","#agame"].some(q=>$(q).classList.contains("on"))){bgc.style.display="none";return}
+ bgc.style.display="block";if(bgc.width!==innerWidth){bgc.width=innerWidth;bgc.height=innerHeight}bx.clearRect(0,0,bgc.width,bgc.height);
+ for(const o of orbs){o.y-=o.s*dt;if(o.y<-.05){o.y=1.05;o.x=Math.random()}const R=o.r*bgc.width*(1+PU*.5),X=o.x*bgc.width+Math.sin(t/1500+o.h)*20,Y=o.y*bgc.height,g=bx.createRadialGradient(X,Y,0,X,Y,R);g.addColorStop(0,`hsla(${o.h},100%,70%,.55)`);g.addColorStop(1,`hsla(${o.h},100%,60%,0)`);bx.fillStyle=g;bx.beginPath();bx.arc(X,Y,R,0,7);bx.fill()}}
+requestAnimationFrame(fxLoop);
+try{const h=$(".logo");let i=0;[...h.childNodes].forEach(n=>{if(n.nodeType===3){const f=document.createDocumentFragment();[...n.textContent].forEach(c=>{if(c===" "){f.appendChild(document.createTextNode(" "));return}const sp=document.createElement("span");sp.textContent=c;sp.style.setProperty("--i",i++);f.appendChild(sp)});n.replaceWith(f)}})}catch(e){}
+
+/* ===== Bank soal kustom: buat prompt untuk ChatGPT, tempel hasil, simpan, pakai di semua game ===== */
+let CB=[];try{CB=JSON.parse(localStorage.getItem("ppbank")||"[]")}catch(e){CB=[]}
+function saveBank(){try{localStorage.setItem("ppbank",JSON.stringify(CB))}catch(e){toast("Penyimpanan penuh atau diblokir browser.")}}
+function cpOld(t){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Tersalin!")}catch(e){toast("Gagal menyalin. Tekan lama pada teks lalu pilih Salin.")}a.remove()}
+function copyTxt(t){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>toast("Tersalin!"),()=>cpOld(t));return}}catch(e){}cpOld(t)}
+function mkPrompt(){const k=$("#bk").value,m=$("#bm").value,d=$("#bd").value,n=$("#bn").value,t=$("#bt").value.trim()||"semua materi umum kelas ini",x=$("#bx").value.trim();
+ return `Kamu adalah guru sekolah dasar di Indonesia yang berpengalaman membuat soal kuis.\n\nBuatkan ${n} soal kuis pilihan ganda DUA OPSI (satu jawaban benar dan satu pengecoh) untuk siswa kelas ${k} SD.\n- Mata pelajaran: ${m}\n- Topik/materi: ${t}\n- Tingkat kesulitan: ${d}${d==="Campuran"?" (campur mudah, sedang, dan sulit)":""}\n- Sesuai Kurikulum Merdeka, dengan bahasa Indonesia yang ramah anak.${x?"\n- Catatan tambahan: "+x:""}\n\nATURAN FORMAT (WAJIB DIIKUTI PERSIS):\n1. Tulis SATU soal per baris.\n2. Format setiap baris: Pertanyaan|Jawaban benar|Pengecoh\n3. Pisahkan dengan tanda | (garis tegak), tepat dua kali per baris.\n4. Jangan beri nomor, judul, penjelasan, markdown, atau tabel.\n5. Jangan memakai tanda | atau ; di dalam teks soal maupun jawaban.\n6. Pertanyaan maksimal 15 kata. Jawaban benar dan pengecoh singkat (maksimal 5 kata).\n7. Pengecoh harus masuk akal tetapi pasti salah. Jawaban benar dan pengecoh tidak boleh sama.\n8. Semua soal harus berbeda, akurat, dan tidak memakai gambar.\n9. Jawaban benar SELALU di kolom ke-2 (aplikasi akan mengacak posisinya).\n10. Berikan HANYA daftar soal di dalam satu blok kode agar mudah disalin.\n\nContoh format:\n7 + 5 = ?|12|11\nIbu kota Indonesia?|Jakarta|Bandung\nHewan yang bertelur?|Ayam|Kucing`}
+function parseQ(txt){const ok=[],err=[];String(txt).replace(/｜/g,"|").split(/\r?\n/).forEach((ln,i)=>{let l=ln.trim();if(!l||/^```/.test(l))return;l=l.replace(/^(\d+[.)]|[-*•])\s+/,"");
+ const f=(l.includes("|")?l.split("|"):l.split("\t")).map(x=>x.trim().replace(/^["“”]+|["“”]+$/g,"").trim());
+ if(f.length!==3){if(f.length>1||l.length>20)err.push(`Baris ${i+1}: harus ada 3 bagian (pertanyaan|benar|pengecoh)`);return}
+ if(!f[0]||!f[1]||!f[2]){err.push(`Baris ${i+1}: ada bagian yang kosong`);return}
+ if(f[1].toLowerCase()===f[2].toLowerCase()){err.push(`Baris ${i+1}: jawaban benar sama dengan pengecoh`);return}
+ if(f[0].length>140||f[1].length>60||f[2].length>60){err.push(`Baris ${i+1}: terlalu panjang`);return}ok.push(f)});
+ const seen=new Set(),u=ok.filter(f=>{const k=f[0].toLowerCase()+"|"+f[1].toLowerCase();if(seen.has(k))return false;seen.add(k);return true});return{ok:u,err,dup:ok.length-u.length}}
+let PQ=null;
+$("#mkp").onclick=()=>{$("#pout").value=mkPrompt();toast("Prompt siap. Tekan Salin prompt, lalu tempel di ChatGPT.")};
+$("#cpp").onclick=()=>{if(!$("#pout").value)$("#pout").value=mkPrompt();copyTxt($("#pout").value)};
+$("#rd").onclick=()=>{PQ=parseQ($("#paste").value);const p=PQ;
+ $("#pv").innerHTML=`<p><b>${p.ok.length} soal terbaca</b>${p.dup?`, ${p.dup} dobel dibuang`:""}${p.err.length?`, ${p.err.length} baris bermasalah`:""}.</p>`+p.ok.slice(0,6).map(f=>`<div class="pq">${E(f[0])} → <b>${E(f[1])}</b> / ${E(f[2])}</div>`).join("")+(p.ok.length>6?`<div class="pq">... dan ${p.ok.length-6} soal lain</div>`:"")+p.err.slice(0,6).map(e=>`<div class="err">${E(e)}</div>`).join("");
+ $("#sv").disabled=!p.ok.length;if(!p.ok.length)toast("Belum ada soal yang terbaca. Periksa format: pertanyaan|benar|pengecoh.")};
+$("#sv").onclick=()=>{if(!PQ||!PQ.ok.length)return;const id=Date.now().toString(36)+Math.random().toString(36).slice(2,5),tp=$("#bt").value.trim(),name=$("#sn").value.trim()||("Kelas "+$("#bk").value+" - "+$("#bm").value+(tp?" - "+tp:""));
+ CB.unshift({id,name,items:PQ.ok,d:new Date().toLocaleDateString("id-ID")});saveBank();renderBank();$("#src").value=id;$("#paste").value="";$("#sn").value="";$("#pv").innerHTML="";$("#sv").disabled=true;PQ=null;toast("Paket disimpan dan dipilih sebagai sumber soal.")};
+$("#bl").onclick=e=>{const b=e.target.closest("button[data-act]");if(!b)return;const id=b.dataset.id,x=CB.find(z=>z.id===id);if(!x)return;
+ if(b.dataset.act==="use"){$("#src").value=id;toast("Paket dipakai. Pilih game di menu lalu mulai.")}
+ else if(b.dataset.act==="copy")copyTxt(x.items.map(f=>f.join("|")).join("\n"));
+ else if(b.dataset.act==="del"&&confirm("Hapus paket ini?")){CB=CB.filter(z=>z.id!==id);saveBank();renderBank()}};
+function renderBank(){const sel=$("#src"),cur=sel.value;sel.innerHTML='<option value="">Bank bawaan (sesuai mapel dan kelas)</option>'+CB.map(x=>`<option value="${E(x.id)}">${E(x.name)} (${x.items.length})</option>`).join("");sel.value=CB.some(x=>x.id===cur)?cur:"";
+ $("#bl").innerHTML=CB.length?CB.map(x=>`<div class="bset"><b>${E(x.name)} (${x.items.length} soal)</b><button class="btn" data-act="use" data-id="${E(x.id)}">Pakai</button><button class="btn ghost" data-act="copy" data-id="${E(x.id)}">Salin teks</button><button class="btn ghost" data-act="del" data-id="${E(x.id)}">Hapus</button></div>`).join(""):"<p>Belum ada paket. Buat prompt di atas, minta ChatGPT, lalu tempel hasilnya di langkah 2.</p>"}
+renderBank();
+
+$("#smc").innerHTML=mascot("happy");$("#alv").innerHTML=hearts(3);
 </script>
 </body>
 </html>
